@@ -36,16 +36,17 @@ Note 2: There are hints for some questions, but if you get really stuck, please 
 
 One of the important administrative Forms for this course has an emoji hiding in it. You can find the Forms page linked from the Quercus home page. Check each of the forms and select which ONE of the following emoji it is.
 
-**
-A. 🚯   
-B. 🔤  
-C. 🚝  
-D. 🕧  
-**
+__A. 🚯  __
+
+__B. 🔤  __
+
+__C. 🚝  __
+
+__D. 🕧  __
 
 Note: These are all examples of unpopular (i.e. not commonly used) emoji based on http://emojitracker.com/. Photosensitivity warning for flashing as the site updates real-time.
 
-```{r formemoji, include=TRUE}
+```{r formemoji, include=FALSE}
 question("What is the correct answer?",
          answer("A"),
          answer("B"),
@@ -60,17 +61,16 @@ question("What is the correct answer?",
 
 Which ONE of the following are statements about this course is FALSE?
 
-**
-A. You do not need to have R and RStudio installed on your personal machine to complete your assessments.
+__A. You do not need to have R and RStudio installed on your personal machine to complete your assessments.__  
 
-B. An error when trying to knit an .Rmd file is an appropriate reason to declare a personal emergency and ask for an accommodation.
+__B. An error when trying to knit an .Rmd file is an appropriate reason to declare a personal emergency and ask for an accommodation.__
 
-C. You will need to have a U of T Zoom account to access class and office hours.
+__C. You will need to have a U of T Zoom account to access class and office hours. __ 
 
-D. Attending class live on Wednesdays is optional, but it is your responsibility to catch up with the recording and any activities.
-**
+__D. Attending class live on Wednesdays is optional, but it is your responsibility to catch up with the recording and any activities.__
 
-```{r trueboutclass, include=TRUE}
+
+```{r trueboutclass, include=FALSE}
 question("What is the correct answer?",
          answer("A"),
          answer("B", correct = TRUE),
@@ -83,17 +83,17 @@ question("What is the correct answer?",
 
 Suppose you would like to request a regrade for your professional development proposal. Which ONE of the following BEST describes what you should do?
 
-**
-A. Contact one of the TA team and politely ask them to regrade the assessment.
 
-B. Email sta303@utoronto.ca with your student number and a detailed justification for your request that makes reference to the rubric and/or course materials.
+__A. Contact one of the TA team and politely ask them to regrade the assessment.__   
 
-C. Go to the Forms page on Quercus and complete the ‘Regrade request’ form 24 hours after receiving your grade, but no later than 1 week + 24 hours after grades have been posted.
+__B. Email sta303@utoronto.ca with your student number and a detailed justification for your request that makes reference to the rubric and/or course materials. __   
 
-D. Go to the Forms page on Quercus and complete the ‘Request a regrade’ form within 24 hours of receiving your grade.
-**
+__C. Go to the Forms page on Quercus and complete the ‘Regrade request’ form 24 hours after receiving your grade, but no later than 1 week + 24 hours after grades have been posted.__    
 
-```{r regrade, include=TRUE}
+__D. Go to the Forms page on Quercus and complete the ‘Request a regrade’ form within 24 hours of receiving your grade.__
+
+
+```{r regrade, include=FALSE}
 question("What is the correct answer?",
          answer("A"),
          answer("B"),
@@ -107,17 +107,17 @@ question("What is the correct answer?",
 
 Suppose you miss submitting a phase of the module 1 writing and peer feedback activity due to illness. Which ONE of the following BEST describes what you should do?
 
-**
-A. Do nothing as basket assessments (other than professional development) do not have accommodations as there are alternative basket options.
 
-B. Go to the Forms page on Quercus and complete the ‘Extension request / declaration of illness or emergency’ form no later than three days after the due date AND complete an ACORN declaration.
+__A. Do nothing as basket assessments (other than professional development) do not have accommodations as there are alternative basket options.__
 
-C. Email a completed U of T Verification of Illness form to sta303@utoronto.ca no later than one week after the due date.
+__B. Go to the Forms page on Quercus and complete the ‘Extension request / declaration of illness or emergency’ form no later than three days after the due date AND complete an ACORN declaration.__
 
-D. Go to the Forms page on Quercus and complete the ‘Extension request / declaration of illness or emergency’ form no later than three days after the due date.
-**
+__C. Email a completed U of T Verification of Illness form to sta303@utoronto.ca no later than one week after the due date.__
 
-```{r missed, include=TRUE}
+__D. Go to the Forms page on Quercus and complete the ‘Extension request / declaration of illness or emergency’ form no later than three days after the due date.__
+
+
+```{r missed, include=FALSE}
 question("What is the correct answer?",
          answer("A",  correct = TRUE),
          answer("B"),
