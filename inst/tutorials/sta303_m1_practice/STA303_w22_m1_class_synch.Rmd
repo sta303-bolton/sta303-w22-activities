@@ -1,6 +1,6 @@
 ---
 title: "STA303: M1 class activity"
-subtitle: "Getting started with STA303 and ANOVA"
+subtitle: "Getting started with STA303"
 output: learnr::tutorial
 css: "css/learnr_303.css"
 runtime: shiny_prerendered
@@ -32,7 +32,7 @@ Note 1: In the Team Up! activity you will just see the letters for the questions
 Note 2: There are hints for some questions, but if you get really stuck, please use the 'Ask for Help' option in Zoom. 
 
 
-## Question 
+## Question 1
 
 One of the important administrative Forms for this course has an emoji hiding in it. You can find the Forms page linked from the Quercus home page. Check each of the forms and select which ONE of the following emoji it is.
 
@@ -56,7 +56,7 @@ question("What is the correct answer?",
 
 
 
-## Question
+## Question 2
 
 Which ONE of the following are statements about this course is FALSE?
 
@@ -79,7 +79,7 @@ question("What is the correct answer?",
          message = "Make sure you are famliar with with syllabus.")
 ```
 
-## Question
+## Question 3
 
 Suppose you would like to request a regrade for your professional development proposal. Which ONE of the following BEST describes what you should do?
 
@@ -102,26 +102,26 @@ question("What is the correct answer?",
          message = "Make sure you are famliar with with syllabus.")
 ```
 
-## Question
+## Question 4
 
 
 Suppose you miss submitting a phase of the module 1 writing and peer feedback activity due to illness. Which ONE of the following BEST describes what you should do?
 
 **
-Do nothing as basket assessments (other than professional development) do not have accommodations as there are alternative basket options.
+A. Do nothing as basket assessments (other than professional development) do not have accommodations as there are alternative basket options.
 
-Go to the Forms page on Quercus and complete the ‘Extension request / declaration of illness or emergency’ form no later than three days after the due date AND complete an ACORN declaration.
+B. Go to the Forms page on Quercus and complete the ‘Extension request / declaration of illness or emergency’ form no later than three days after the due date AND complete an ACORN declaration.
 
-Email a completed U of T Verification of Illness form to sta303@utoronto.ca no later than one week after the due date.
+C. Email a completed U of T Verification of Illness form to sta303@utoronto.ca no later than one week after the due date.
 
-Go to the Forms page on Quercus and complete the ‘Missed submitting a type 2 assessment’ form no later than one week after the due date.
+D. Go to the Forms page on Quercus and complete the ‘Extension request / declaration of illness or emergency’ form no later than three days after the due date.
 **
 
 ```{r missed, include=TRUE}
 question("What is the correct answer?",
-         answer("A"),
+         answer("A",  correct = TRUE),
          answer("B"),
-         answer("C", correct = TRUE),
+         answer("C",),
          answer("D"),
          message = "Make sure you are famliar with with syllabus.")
 ```
