@@ -1,0 +1,127 @@
+---
+title: "STA303: M1 class activity"
+subtitle: "Getting started with STA303 and ANOVA"
+output: learnr::tutorial
+css: "css/learnr_303.css"
+runtime: shiny_prerendered
+---
+
+```{r setup, include = FALSE}
+library(learnr)
+library(tidyverse)
+#library(modelr)
+library(lubridate) # to make it easy to work with dates
+
+knitr::opts_chunk$set(echo = FALSE)
+
+
+# replace include=FALSE with include=TRUE (note lack of spaces) to create the version that has the answers in it
+```
+
+## Instructions
+
+To participate in this activity you will need have to two windows readily available to you:
+
+1) Your Zoom window  
+2) The Team Up! activity linked from Quercus in a browser window for voting.
+
+I would recommend that one member of the team shares their screen with the rest of the team and shows this activity where you can see the question and options.
+
+Note 1: In the Team Up! activity you will just see the letters for the questions, not the options themselves. 
+
+Note 2: There are hints for some questions, but if you get really stuck, please use the 'Ask for Help' option in Zoom. 
+
+
+## Question 
+
+One of the important administrative Forms for this course has an emoji hiding in it. You can find the Forms page linked from the Quercus home page. Check each of the forms and select which ONE of the following emoji it is.
+
+**
+A. 🚯   
+B. 🔤  
+C. 🚝  
+D. 🕧  
+**
+
+Note: These are all examples of unpopular (i.e. not commonly used) emoji based on http://emojitracker.com/. Photosensitivity warning for flashing as the site updates real-time.
+
+```{r formemoji, include=TRUE}
+question("What is the correct answer?",
+         answer("A"),
+         answer("B"),
+         answer("C"),
+         answer("D", correct = TRUE),
+         message = "You'll just have to go open the forms to check.")
+```
+
+
+
+## Question
+
+Which ONE of the following are statements about this course is FALSE?
+
+**
+A. You do not need to have R and RStudio installed on your personal machine to complete your assessments.
+
+B. An error when trying to knit an .Rmd file is an appropriate reason to declare a personal emergency and ask for an accommodation.
+
+C. You will need to have a U of T Zoom account to access class and office hours.
+
+D. Attending class live on Wednesdays is optional, but it is your responsibility to catch up with the recording and any activities.
+**
+
+```{r trueboutclass, include=TRUE}
+question("What is the correct answer?",
+         answer("A"),
+         answer("B", correct = TRUE),
+         answer("C"),
+         answer("D"),
+         message = "Make sure you are famliar with with syllabus.")
+```
+
+## Question
+
+Suppose you would like to request a regrade for your professional development proposal. Which ONE of the following BEST describes what you should do?
+
+**
+A. Contact one of the TA team and politely ask them to regrade the assessment.
+
+B. Email sta303@utoronto.ca with your student number and a detailed justification for your request that makes reference to the rubric and/or course materials.
+
+C. Go to the Forms page on Quercus and complete the ‘Regrade request’ form 24 hours after receiving your grade, but no later than 1 week + 24 hours after grades have been posted.
+
+D. Go to the Forms page on Quercus and complete the ‘Request a regrade’ form within 24 hours of receiving your grade.
+**
+
+```{r regrade, include=TRUE}
+question("What is the correct answer?",
+         answer("A"),
+         answer("B"),
+         answer("C", correct = TRUE),
+         answer("D"),
+         message = "Make sure you are famliar with with syllabus.")
+```
+
+## Question
+
+
+Suppose you miss submitting a phase of the module 1 writing and peer feedback activity due to illness. Which ONE of the following BEST describes what you should do?
+
+**
+Do nothing as basket assessments (other than professional development) do not have accommodations as there are alternative basket options.
+
+Go to the Forms page on Quercus and complete the ‘Extension request / declaration of illness or emergency’ form no later than three days after the due date AND complete an ACORN declaration.
+
+Email a completed U of T Verification of Illness form to sta303@utoronto.ca no later than one week after the due date.
+
+Go to the Forms page on Quercus and complete the ‘Missed submitting a type 2 assessment’ form no later than one week after the due date.
+**
+
+```{r missed, include=TRUE}
+question("What is the correct answer?",
+         answer("A"),
+         answer("B"),
+         answer("C", correct = TRUE),
+         answer("D"),
+         message = "Make sure you are famliar with with syllabus.")
+```
