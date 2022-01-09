@@ -1,6 +1,6 @@
 ---
 title: "Common statistical tests as linear regression"
-subtitle: "STA303 Week 1"
+subtitle: "STA303 Module 1"
 output: learnr::tutorial
 css: "css/learnr_303.css"
 runtime: shiny_prerendered
@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction
 
-_Technical note: I have had to remove code answer checking, but if you get stuck the final 'Hint' is the solution. This is ungraded, so don't worry, just slightly inconvenient._
+_Note: If you get stuck the final 'Hint' is the solution. This is ungraded, so don't worry, just slightly inconvenient._
 
 You have probably encountered several statistical tests in your studies so far. 
 
@@ -332,7 +332,7 @@ More generally, the sum across the row of the dummy variables for one categorica
 
 You may recall that for the matrix calculations required to get our vector of $\beta$s, we need to be able to invert X our matrix. We can only invert matrices for which all the columns are linearly independent and if we have the intercept AND dummies for all the levels of the categorical variable, our matrix will be linearly dependent.
 
-[OPTIONAL _Added 2021-01-14_] Additional discussion [here](https://sta303-bolton.github.io/sta303_w1_slides/matrix_demo.html) based on this [Piazza question](https://piazza.com/class/kj98c115q7077t?cid=28).
+[OPTIONAL] Additional discussion [here](https://sta303-bolton.github.io/sta303-w22-courseguide/bits-and-pieces.html#matrices).
 
 ## Two means 
 
