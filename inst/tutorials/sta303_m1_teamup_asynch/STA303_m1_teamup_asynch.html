@@ -119,15 +119,9 @@ $(document).ready(function () {
 
 <div id="section-instructions" class="section level2">
 <h2>Instructions</h2>
-<p>To participate in this activity you will need have to two windows readily available to you:</p>
-<ol style="list-style-type: decimal">
-<li>Your Zoom window<br />
-</li>
-<li>The Team Up! activity linked from Quercus in a browser window for voting.</li>
-</ol>
-<p>I would recommend that one member of the team shares their screen with the rest of the team and shows this activity where you can see the question and options.</p>
-<p>Note 1: In the Team Up! activity you will just see the letters for the questions, not the options themselves.</p>
-<p>Note 2: There are hints for some questions, but if you get really stuck, please use the ‘Ask for Help’ option in Zoom.</p>
+<p>This is a revision task based on the Module 1 Team Up! activity. There are no bonus points for completing the task asynchronously, but I hope it might be a useful revision tool for you.</p>
+<p>There are hints for some questions. In these cases the final hint is complete correct code.</p>
+<p>You can clear your answers and start again with the ‘Start Over’ button at the bottom of the menu. (I doubt this is well optimised for mobile, so if you can’t see it, use a larger screen.)</p>
 <p>Question 1 to 6 refer to the TV show data discussed in the next tab. Question 7, 8 and 9 are self-contained.</p>
 </div>
 <div id="section-the-data" class="section level2">
@@ -169,13 +163,22 @@ tv_data &lt;- read_csv(url)</code></pre>
 <div id="section-assumptions" class="section level3">
 <h3>Assumptions</h3>
 <p>Carefully consider the <code>head</code> and <code>glimpse</code> of the data provided in the data section and the plot below.</p>
-<p><img src="STA303_m1_teamup_synch_files/figure-html/scatterplot-1.png" width="624" /></p>
+<p><img src="STA303_m1_teamup_asynch_files/figure-html/scatterplot-1.png" width="624" /></p>
 <p>Suppose you wish to use fit a model to predict average season rating (<code>av_rating</code>) from <code>date</code> alone. Using just the information you have so far, which ONE of the following comments is most appropriate?</p>
 <p><strong> A. Linear regression seems appropriate.<br />
-B. Linear regression does not seem appropriate due to the independence assumption being violated.<br />
-C. Linear regression does not seem appropriate due to the equality of variance assumption being violated.<br />
-D. Linear regression does not seem appropriate due to the linearity assumption being violated. </strong></p>
+B. Linear regression does not seem appropriate due to the equality of variance assumption being violated.<br />
+C. Linear regression does not seem appropriate due to the linearity assumption being violated.<br />
+D. Linear regression does not seem appropriate due to the independence assumption being violated.<br />
+</strong></p>
 <p>Note: In the following questions we will assume we can proceed with linear regression. This may or may not be <em>correct</em>. I.e., it is not a hint to the answer to this question.</p>
+<div class="panel panel-default">
+<div data-label="assumptions" class="tutorial-question panel-body">
+<div id="assumptions-answer_container" class="shiny-html-output"></div>
+<div id="assumptions-message_container" class="shiny-html-output"></div>
+<div id="assumptions-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 </div>
 </div>
 <div id="section-question-2" class="section level2">
@@ -199,7 +202,7 @@ just2010 &lt;- filter(tv_data_edit, decade == &quot;2010&quot;)</code></pre>
 B. We have some evidence against the claim that that the average, average rating is 8.1.<br />
 C. We have very strong evidence against the claim that the average, average rating is 8.1.<br />
 D. The <code>t.test</code> function produces an error due to a violation of Normality assumption. </strong></p>
-<p>If you get an erorr saying your data is missing, add the following code to the beginning of the code chunk to call it again.</p>
+<p>If you get an error saying your data is missing, add the following code to the beginning of the code chunk to call it again.</p>
 <pre><code>url &lt;- &quot;https://raw.githubusercontent.com/TheEconomist/graphic-detail-data/master/data/2018-11-24_tv-ratings/IMDb_Economist_tv_ratings.csv&quot;
 
 tv_data &lt;- read_csv(url)
@@ -210,6 +213,14 @@ tv_data_edit &lt;- tv_data %&gt;%
   mutate(scifi = ifelse(grepl(&quot;Sci-Fi&quot;, genres), &quot;scifi&quot;, &quot;no&quot;)) %&gt;% 
   group_by(decade) %&gt;% 
   mutate(mean = mean(av_rating))</code></pre>
+<div class="panel panel-default">
+<div data-label="onetest_ans" class="tutorial-question panel-body">
+<div id="onetest_ans-answer_container" class="shiny-html-output"></div>
+<div id="onetest_ans-message_container" class="shiny-html-output"></div>
+<div id="onetest_ans-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 </div>
 </div>
 <div id="section-question-3" class="section level2">
@@ -217,11 +228,11 @@ tv_data_edit &lt;- tv_data %&gt;%
 <div id="section-toy-data" class="section level3">
 <h3>Toy data</h3>
 <p>Let’s take a moment to do something very simple. I have pulled five observations from each decade to plot.</p>
-<p><img src="STA303_m1_teamup_synch_files/figure-html/simpleplot-1.png" width="600" /></p>
+<p><img src="STA303_m1_teamup_asynch_files/figure-html/simpleplot-1.png" width="600" /></p>
 </div>
 <div id="section-how-do-we-make-sense-of-this-with-linear-regression" class="section level3">
 <h3>How do we make sense of this with linear regression?</h3>
-<p>Let’s start by fitting a line to each group separately. (Aside: if you interpreted each of these as a one sample t-test, you’d be testing $H_0: </p>
+<p>Let’s start by fitting a line to each group separately. (Aside: if you interpreted each of these as a one sample t-test, you’d be testing <span class="math inline">\(H_0: \mu\)</span></p>
 <pre class="r"><code>sep_mod &lt;- c(
   lm(av_rating~1, filter(simple, decade == 1990))$coef,
   lm(av_rating~1, filter(simple, decade == 2000))$coef,
@@ -234,7 +245,7 @@ sep_mod</code></pre>
 <pre><code>## xbar1990 xbar2000 xbar2010 
 ##  7.71498  8.02172  8.44652</code></pre>
 <p>Hopefully you agree that the intercept of each of these ‘intercept only’ models are the means of each group.</p>
-<p><img src="STA303_m1_teamup_synch_files/figure-html/unnamed-chunk-7-1.png" width="624" /></p>
+<p><img src="STA303_m1_teamup_asynch_files/figure-html/unnamed-chunk-7-1.png" width="624" /></p>
 <p>Now suppose I claim that we can describe all 15 points with this equation:</p>
 <p><span class="math display">\[y_i = d_{1}\bar{x}_{1990} + d_{2}\bar{x}_{2000} + d_{3}\bar{x}_{2010} + \epsilon_i\]</span></p>
 <p>Where <span class="math inline">\(\epsilon_i \sim \text{N}(0, \sigma)\)</span>.</p>
@@ -243,6 +254,14 @@ sep_mod</code></pre>
 B. There are infinite possible combinations of three <span class="math inline">\(d\)</span> vectors for which this would be true, so as long as it is any one of those, this will be true.<br />
 C. Each <span class="math inline">\(d\)</span> would have to be a vector of FIVE 0s and 1s, and take the value 1 when the observation is the decade indicated by the <span class="math inline">\(\mu_{year}\)</span> it is multiplied by.<br />
 D. Each <span class="math inline">\(d\)</span> would have to be a vector of FIFTEEN 0s and 1s, and take the value 1 when the observation is that decade. </strong></p>
+<div class="panel panel-default">
+<div data-label="whatd" class="tutorial-question panel-body">
+<div id="whatd-answer_container" class="shiny-html-output"></div>
+<div id="whatd-message_container" class="shiny-html-output"></div>
+<div id="whatd-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 </div>
 </div>
 <div id="section-question-4" class="section level2">
@@ -255,7 +274,15 @@ B. <span class="math inline">\(y_i = \bar{x}_{1990} + d_{2}(\bar{x}_{2000}-\bar{
 C. <span class="math inline">\(y_i = (\bar{x}_{1990} +\bar{x}_{2000} + \bar{x}_{2010})*(-d_{1} - d_{2} - d_{3})\)</span><br />
 D. <span class="math inline">\(y_i =d_{1}(\bar{x}_{1990}- \bar{x}_{2010}) + d_{2}( \bar{x}_{2000}- \bar{x}_{1990}) + d_{3}( \bar{x}_{2010}- \bar{x}_{1990}) +\epsilon_i\)</span></p>
 <p>You may (or may not) find this visualization helpful to your thinking.</p>
-<p><img src="STA303_m1_teamup_synch_files/figure-html/unnamed-chunk-8-1.png" width="500" /></p>
+<p><img src="STA303_m1_teamup_asynch_files/figure-html/unnamed-chunk-8-1.png" width="500" /></p>
+<div class="panel panel-default">
+<div data-label="dummies" class="tutorial-question panel-body">
+<div id="dummies-answer_container" class="shiny-html-output"></div>
+<div id="dummies-message_container" class="shiny-html-output"></div>
+<div id="dummies-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 </div>
 </div>
 <div id="section-question-5" class="section level2">
@@ -266,7 +293,8 @@ D. <span class="math inline">\(y_i =d_{1}(\bar{x}_{1990}- \bar{x}_{2010}) + d_{2
 <p>The below code produces a summary of the <code>tv_data_edit</code> tibble. You can ignore the ‘.groups = “keep”’ part. Even if you are unfamiliar with the over syntax, you should be able to figure out what a, b, c, d and e are from your previous knowledge of R.</p>
 <pre class="r"><code>tv_data_edit %&gt;% 
   group_by(decade) %&gt;% 
-  summarise(a = mean(av_rating), b = var(av_rating), c = sd(av_rating), d = var(av_rating)^2, e = max(av_rating), .groups = &quot;keep&quot;)</code></pre>
+  summarise(a = mean(av_rating), b = var(av_rating), c = sd(av_rating), 
+            d = var(av_rating)^2, e = max(av_rating), .groups = &quot;keep&quot;)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["decade"],"name":[1],"type":["chr"],"align":["left"]},{"label":["a"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["c"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["d"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["e"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"1990","2":"7.833275","3":"0.6864401","4":"0.8285168","5":"0.4712000","6":"9.6824"},{"1":"2000","2":"8.021720","3":"0.3605839","4":"0.6004864","5":"0.1300207","6":"9.4000"},{"1":"2010","2":"8.108241","3":"0.4441673","4":"0.6664588","5":"0.1972846","6":"9.5540"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -281,6 +309,14 @@ D. <span class="math inline">\(y_i =d_{1}(\bar{x}_{1990}- \bar{x}_{2010}) + d_{2
 B. The equality of variances assumption appears to be satisfied, but we can’t proceed with ANOVA without checking the other assumptions.<br />
 C. The equality of variances assumption appears to be seriously violated, therefore ANOVA is not appropriate.<br />
 D. Not enough information to make a claim about the equality of variances assumption. </strong></p>
+<div class="panel panel-default">
+<div data-label="eqvar-ans" class="tutorial-question panel-body">
+<div id="eqvar-ans-answer_container" class="shiny-html-output"></div>
+<div id="eqvar-ans-message_container" class="shiny-html-output"></div>
+<div id="eqvar-ans-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 </div>
 </div>
 <div id="section-question-6" class="section level2">
@@ -314,9 +350,17 @@ D. Not enough information to make a claim about the equality of variances assump
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Assume the assumptions for ANOVA are valid (this may not be true). Which ONE of the following is the best conclusion?</p>
-<p><strong> A. We have very strong evidence (p-value &lt; 2e-16) against the hypothesis that the mean season average ratings are the same in each decade. B. We have very strong evidence (p-value = 5.788e-08) against the hypothesis that the mean season average ratings are the same in each decade.<br />
-C. We have very very strong evidence (p-value = 5.788e-08) that at least one of the mean season average ratings is different from the others.<br />
+<p><strong> A. We have very strong evidence (p-value &lt; 2e-16) against the hypothesis that the mean season average ratings are the same in each decade.<br />
+B. We have very strong evidence (p-value = 5.79e-08) against the hypothesis that the mean season average ratings are the same in each decade. C. We have very very strong evidence (p-value = 5.79e-08) that at least one of the mean season average ratings is different from the others.<br />
 D. We have very strong evidence (p-value &lt; 2e-16) that at least one of the mean season average ratings is different from the others. </strong></p>
+<div class="panel panel-default">
+<div data-label="anova-conc" class="tutorial-question panel-body">
+<div id="anova-conc-answer_container" class="shiny-html-output"></div>
+<div id="anova-conc-message_container" class="shiny-html-output"></div>
+<div id="anova-conc-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 </div>
 </div>
 <div id="section-question-7" class="section level2">
@@ -328,6 +372,14 @@ D. We have very strong evidence (p-value &lt; 2e-16) that at least one of the me
 B. <span class="math inline">\(Y = \beta_0 + \beta_1X_1 + \beta_2X_2X_3\)</span><br />
 C. <span class="math inline">\(Y = \beta_0 + \beta_1X_1 + X_3^{\beta_2}\)</span><br />
 D. <span class="math inline">\(Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_3cos(X_3)\)</span></p>
+<div class="panel panel-default">
+<div data-label="linear" class="tutorial-question panel-body">
+<div id="linear-answer_container" class="shiny-html-output"></div>
+<div id="linear-message_container" class="shiny-html-output"></div>
+<div id="linear-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 </div>
 </div>
 <div id="section-question-8" class="section level2">
@@ -349,6 +401,14 @@ D. <span class="math inline">\(Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_3co
 B. <code>y_i = \beta_0 + \beta_1x_1i + \epsilon_i</code><br />
 C. <code>y_i = \b_0 + \b_0\ex_1i + \error_i</code><br />
 D. <code>y_i = \beta_0 + \beta_1x_{1i} + \epsilon_i</code></p>
+<div class="panel panel-default">
+<div data-label="latex" class="tutorial-question panel-body">
+<div id="latex-answer_container" class="shiny-html-output"></div>
+<div id="latex-message_container" class="shiny-html-output"></div>
+<div id="latex-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
 </div>
 </div>
 <div id="section-question-9" class="section level2">
@@ -362,10 +422,19 @@ D. <code>y_i = \beta_0 + \beta_1x_{1i} + \epsilon_i</code></p>
 <p>Test 3: Linear regression with formula <code>score</code> ~ <code>section</code></p>
 <p>Test 4: Independent t-test</p>
 <p>Test 5: Wilcoxon signed-rank test</p>
-<strong> A. Tests 1, 2 &amp; 3<br />
+<p><strong> A. Tests 1, 2 &amp; 3<br />
 B. Tests 2 &amp; 3<br />
 C. Tests 4 &amp; 5<br />
-D. Tests 1, 3 &amp; 5 </strong> 
+D. Tests 1, 3 &amp; 5 </strong></p>
+<div class="panel panel-default">
+<div data-label="tests" class="tutorial-question panel-body">
+<div id="tests-answer_container" class="shiny-html-output"></div>
+<div id="tests-message_container" class="shiny-html-output"></div>
+<div id="tests-action_button_container" class="shiny-html-output"></div>
+<script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
+</div>
+</div>
+
 <script type="application/shiny-prerendered" data-context="server-start">
 library(learnr)
 library(tidyverse)
@@ -399,7 +468,7 @@ session$onSessionEnded(function() {
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "assump_ans", question = structure("What is the correct answer?", html = TRUE, class = c("html", "character")), answers = list(structure(list(id = "lnr_ans_e0ec1d3",     option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_a18b75",     option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",     "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_9ee2c2a",     option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_63968df",     option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html", "character")), try_again = structure("Try Again", html = TRUE, class = c("html", "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", "character")), message = NULL, post_message = NULL), ids = list(    answer = "assump_ans-answer", question = "assump_ans"), loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html", "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 304027337.358426, options = list()), class = c("learnr_radio", "tutorial_question")))
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "assumptions",     question = structure("What is the correct answer?", html = TRUE, class = c("html",     "character")), answers = list(structure(list(id = "lnr_ans_bc27d75",         option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_feda423",         option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_34ae93",         option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_f81b298",         option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html",     "character")), try_again = structure("Try Again", html = TRUE, class = c("html",     "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html",     "character")), try_again = structure("Incorrect", html = TRUE, class = c("html",     "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html",     "character")), message = structure("This one is a little tricky because it requires you to think carefully about the structure of the data. You&#39;ll notice from the summaries in the &#39;The data&#39; tab (or if you just think about how TV shows work) that each season is a season OF A TV SHOW. Do you except the quality and ratings of seasons of the same TV show to be independent? I don&#39;t! That is why I think our independence assumption is probably violated here. One of the topics we&#39;ll cover in the course will give us more tools for dealing with repeated measure situations like this.", html = TRUE, class = c("html",     "character")), post_message = NULL), ids = list(answer = "assumptions-answer",         question = "assumptions"), loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html",     "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 2125440211.01026, options = list()), class = c("learnr_radio", "tutorial_question")))
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
@@ -410,7 +479,15 @@ output$`tutorial-exercise-onetest-output` <- renderUI({
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "onetest_ans",     question = structure("What is the correct answer?", html = TRUE, class = c("html",     "character")), answers = list(structure(list(id = "lnr_ans_b498254",         option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_2a5d6fd",         option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_8a61060",         option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_ee24181",         option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html",     "character")), try_again = structure("Try Again", html = TRUE, class = c("html",     "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html",     "character")), try_again = structure("Incorrect", html = TRUE, class = c("html",     "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html",     "character")), message = NULL, post_message = NULL), ids = list(        answer = "onetest_ans-answer", question = "onetest_ans"),     loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html",     "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 1824374752.65046, options = list()), class = c("learnr_radio", "tutorial_question")))
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "onetest_ans",     question = structure("What is the correct answer?", html = TRUE, class = c("html",     "character")), answers = list(structure(list(id = "lnr_ans_fb63f6d",         option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_f2b31e5",         option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_ca4c53c",         option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_9709d27",         option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html",     "character")), try_again = structure("Try Again", html = TRUE, class = c("html",     "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html",     "character")), try_again = structure("Incorrect", html = TRUE, class = c("html",     "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html",     "character")), message = structure("Our p-value is large (0.64) so we have no evidence against our null hypothesis, which is the claim that the average (average) season rating is 8.1.", html = TRUE, class = c("html",     "character")), post_message = NULL), ids = list(answer = "onetest_ans-answer",         question = "onetest_ans"), loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html",     "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 2044363044.54802, options = list()), class = c("learnr_radio", "tutorial_question")))
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "whatd", question = structure("What is the correct answer?", html = TRUE, class = c("html", "character")), answers = list(structure(list(id = "lnr_ans_a22e6ac",     option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_6c50da9",     option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_67bbd73",     option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_eb306d9",     option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",     "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html", "character")), try_again = structure("Try Again", html = TRUE, class = c("html", "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", "character")), message = structure("The 0s and 1s for our d vectors act as &#39;on&#39; and &#39;off&#39; switches for the group means. We need an element per observation, hence the length of 15, and in this particular set up, where each d is associated with a decade mean, there would be no &#39;intercept&#39; style columns of all ones.", html = TRUE, class = c("html", "character")), post_message = NULL), ids = list(answer = "whatd-answer",     question = "whatd"), loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html", "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 1736799493.69124, options = list()), class = c("learnr_radio", "tutorial_question")))
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "dummies", question = structure("What is the correct answer?", html = TRUE, class = c("html", "character")), answers = list(structure(list(id = "lnr_ans_8a43694",     option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",     "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_1b77151",     option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_745681a",     option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_d4dace",     option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html", "character")), try_again = structure("Try Again", html = TRUE, class = c("html", "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", "character")), message = structure("This can be done with just plain algebra, or you might like to think about the image, and that you can get to each other group mean by starting at the first groups mean and moving up or down the distance between the two groups. The red lines in the picture represent the first and second bracketed components, respectively ", html = TRUE, class = c("html", "character")), post_message = NULL), ids = list(answer = "dummies-answer",     question = "dummies"), loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html", "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 1629361657.24127, options = list()), class = c("learnr_radio", "tutorial_question")))
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
@@ -418,6 +495,26 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 output$`tutorial-exercise-eqvar-output` <- renderUI({
   `tutorial-exercise-eqvar-result`()
 })
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "eqvar-ans", question = structure("What is the correct answer?", html = TRUE, class = c("html", "character")), answers = list(structure(list(id = "lnr_ans_1574b4e",     option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_9a8226e",     option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",     "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_3ade07b",     option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_f782623",     option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html", "character")), try_again = structure("Try Again", html = TRUE, class = c("html", "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", "character")), message = structure("Need to look at column b for this as it shows the variances. The max is 0.686 and the min is 0.361 and 0.686/0.361 &lt; 3 so that equality of variances assumption appears fine BUT there are other assumptions for ANOVA, so we would need to think about if they were appropriately satisfied before proceeding.", html = TRUE, class = c("html", "character")), post_message = NULL), ids = list(answer = "eqvar-ans-answer",     question = "eqvar-ans"), loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html", "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 1298271388.39545, options = list()), class = c("learnr_radio", "tutorial_question")))
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "anova-conc", question = structure("What is the correct answer?", html = TRUE, class = c("html", "character")), answers = list(structure(list(id = "lnr_ans_a3bd227",     option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_eb4372b",     option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",     "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_25dddee",     option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_5441ac2",     option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html", "character")), try_again = structure("Try Again", html = TRUE, class = c("html", "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", "character")), message = structure("The correct p-value to interpret is 5.79e-08. You&#39;ll see it on the bottom line of the lm output (the one that starts with F-statistic, which is our test statistics for ANOVA. It is a very small number (0.0000000579), and the smaller the p-value the stronger the evidence AGAINST our null hypothesis. Being very careful with our language here, we never want to say evidence FOR the alternative.", html = TRUE, class = c("html", "character")), post_message = NULL), ids = list(answer = "anova-conc-answer",     question = "anova-conc"), loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html", "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 1572885134.76757, options = list()), class = c("learnr_radio", "tutorial_question")))
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "linear", question = structure("What is the correct answer?", html = TRUE, class = c("html", "character")), answers = list(structure(list(id = "lnr_ans_ae3d6fb",     option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_8f326ac",     option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_65d7dad",     option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",     "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_127e40a",     option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html", "character")), try_again = structure("Try Again", html = TRUE, class = c("html", "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", "character")), message = structure("In C, there is a beta in an exponent, which makes this non-linear, because it is not linear in the parameters.", html = TRUE, class = c("html", "character")), post_message = NULL), ids = list(answer = "linear-answer",     question = "linear"), loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html", "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 2142848966.00216, options = list()), class = c("learnr_radio", "tutorial_question")))
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "latex", question = structure("What is the correct answer?", html = TRUE, class = c("html", "character")), answers = list(structure(list(id = "lnr_ans_575d0c",     option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_743be55",     option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_25301da",     option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_574bf04",     option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",     "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html", "character")), try_again = structure("Try Again", html = TRUE, class = c("html", "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", "character")), message = structure("A is wrong because it is missing the underscores for subscripts. B is wrong because the 1i should be in curly brackets, i.e., {1i} otherwise the i won&#39;t be included in the subscript. C is wrong because \\error isn&#39;t the command for epsilon, nor is \\ex for x or \\b for beta, and it has the same subscript problem as B.", html = TRUE, class = c("html", "character")), post_message = NULL), ids = list(answer = "latex-answer",     question = "latex"), loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html", "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 500928072.266737, options = list()), class = c("learnr_radio", "tutorial_question")))
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "tests", question = structure("What is the correct answer?", html = TRUE, class = c("html", "character")), answers = list(structure(list(id = "lnr_ans_18ddec7",     option = "A", value = "A", label = structure("A", html = TRUE, class = c("html",     "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_7f29557",     option = "B", value = "B", label = structure("B", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_92b520a",     option = "C", value = "C", label = structure("C", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_cd3dd28",     option = "D", value = "D", label = structure("D", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html", "character")), try_again = structure("Try Again", html = TRUE, class = c("html", "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", "character")), message = structure("As there are 5 sections and we&#39;re interested in the question &#39;do all the sections have the same mean?&#39; we need a test that compares more than two groups. This rules out tests 4 and 5 (and so options C and D). 1 through 3 are all appropriate as this is what they are for. Specifically, One-way anova is a special type of linear regression, where we just have a single categorical predicator of more than two levels. Test 2 and 3 will be equivalent as R will convert Test 3 into Test 2 when it makes the model matrix. We could just make it by hand and feed those indicator variables in as the predictors.", html = TRUE, class = c("html", "character")), post_message = NULL), ids = list(answer = "tests-answer",     question = "tests"), loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the correct answer?\n<br/><br/><br/>", html = TRUE, class = c("html", "character")), random_answer_order = FALSE, allow_retry = FALSE,     seed = 1346052887.8732, options = list()), class = c("learnr_radio", "tutorial_question")))
 </script>
  <!--html_preserve-->
 <script type="application/shiny-prerendered" data-context="dependencies">
