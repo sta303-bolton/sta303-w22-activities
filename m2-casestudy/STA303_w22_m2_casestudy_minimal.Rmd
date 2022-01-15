@@ -1,12 +1,8 @@
 ---
-title: "Student grades case study"
+title: "Student grades case study: Minimal"
 output:
   pdf_document: default
-  html_notebook: default
-  html_document:
-    df_print: paged
-date: '2021-01-18'
-subtitle: STA303/1002 Week 2
+subtitle: STA303/1002 Module 2
 ---
 
 # Getting Started

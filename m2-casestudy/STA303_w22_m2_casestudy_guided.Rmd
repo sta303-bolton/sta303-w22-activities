@@ -1,12 +1,8 @@
 ---
-title: "Student grades case study"
+title: "Student grades case study: guided"
 output:
   pdf_document: default
-  html_notebook: default
-  html_document:
-    df_print: paged
-date: '2021-01-18'
-subtitle: STA303/1002 Week 2
+subtitle: STA303/1002 Module 2
 ---
 
 # Getting Started
@@ -141,9 +137,9 @@ I've also shown some code to very quickly get the names of all the variables in 
 ```{r, example_check}
 # glimpse lets us take a quick look at the data
 
-#head lets us look at the top few rows. Can you guess waht tail() does?
+#head lets us look at the top few rows. Can you guess what tail() does?
 
-# str is an even more sophicticated glimpse, that is quite good if 
+# str is an even more sophisticated glimpse, that is quite good if 
 ## you know there are some complicated structures with your data. Out of scope for us.
 
 # View will open a new tab with a spreadsheet like view
