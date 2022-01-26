@@ -27,8 +27,6 @@ package.check <- lapply(
 
 ```{r, message=FALSE}
 ## Load the libraries
-
-library(palmerpenguins)
 library(tidyverse)
 
 ## Create the datasets
