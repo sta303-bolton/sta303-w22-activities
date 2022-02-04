@@ -19,6 +19,16 @@ package.check <- lapply(
     }
   }
 )
+
+tomatoes <- tibble(
+  plant = rep(1:6, each = 4),
+  fertilizer = rep(c("basic", "quality"), each = 12),
+  weight = c(123, 124, 128, 125,
+    135, 140, 129, 131,
+    146, 143, 142.5, 145,
+    135, 136, 150, 140.5,
+    160, 159, 161, 170,
+    162, 161, 152, 151))
 ```
 
 ```{r, echo=FALSE, fig.align='center', out.width="100%"}
@@ -164,7 +174,21 @@ Create a plot with `plant` on the x axis, `weight` on the y axis and coloured by
 
 ```
 
-```{r tom_plot-hint}
+
+```{r tom_plot-hint-1}
+# Any trouble with loadng the data? Paste this in to your coding area
+tomatoes <- tibble(
+  plant = rep(1:6, each = 4),
+  fertilizer = rep(c("basic", "quality"), each = 12),
+  weight = c(123, 124, 128, 125,
+    135, 140, 129, 131,
+    146, 143, 142.5, 145,
+    135, 136, 150, 140.5,
+    160, 159, 161, 170,
+    162, 161, 152, 151))
+```
+
+```{r tom_plot-hint-2}
 tomatoes %>% 
   ggplot(aes(x = plant, y = weight, colour = fertilizer)) +
   # add some more code here
