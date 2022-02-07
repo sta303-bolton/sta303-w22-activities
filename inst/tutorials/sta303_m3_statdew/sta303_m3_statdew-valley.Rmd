@@ -1,13 +1,13 @@
 ---
 title: "STA303: M3 Statdew Valley"
-subtitle: "An exploration of correlated data through agriculture"
+subtitle: "A statisitcal farming simulator"
 output: learnr::tutorial
 lib_dir: libs
 css: "css/learnr_303.css"
 runtime: shiny_prerendered
 ---
 
-```{r, echo=FALSE, message=FALSE}
+```{r setup, echo=FALSE, message=FALSE}
 # These are the packages you will need for this activity
 packages_needed <- c("tidyverse", "learnr", "knitr")
 
@@ -29,17 +29,46 @@ tomatoes <- tibble(
     135, 136, 150, 140.5,
     160, 159, 161, 170,
     162, 161, 152, 151))
+
+set.seed(95)
+honey <- tibble(
+  hive = rep(rep(1:6, each = 3), times = 3),
+  song = rep(c("No music", "Adagio in B minor by Mozart", "Butter by BTS"), each = 18),
+  honey_g = c(196.56,199.58,200.71,195.8,199.58,200.71,226.8,227.55,220.75,193.15,197.69,190.13,192.4,195.8,194.29,175.39,169.34,185.97,234.73,236.62,241.92,225.66,226.8,223.02,259.3,248.72,263.46,238.89,237.38,235.11,244.94,245.7,247.21,165.18,167.07,162.54,255.15,254.01,252.88,232.47,233.22,235.49,267.62,266.86,268.38,242.29,250.23,241.92,272.53,272.16,268.75,234.36,232.09,228.69))
+
+honey <- honey %>% 
+  mutate(song = fct_relevel(song, "No music", after = 0)) %>% 
+  mutate(hive = as_factor(hive)) 
+
+honey_agg_int <- honey %>%   
+  group_by(hive, song) %>% 
+  summarize(honey_avg = mean(honey_g), .groups = "drop") 
+
+honey_agg_hive <- honey %>% 
+  group_by(hive) %>% 
+  summarize(honey_avg_hive = mean(honey_g))
+
+bee_int_mod <- lm(honey_g ~ song*hive, data = honey)
+bee_agg_mod <- lm(honey_avg ~ song + hive, data = honey_agg_int)
+bee_hive_mod <- lm(honey_avg_hive ~ 1, data = honey_agg_hive)
+
+var_int <- summary(bee_int_mod)$sigma^2
+
+var_ab <- summary(bee_agg_mod)$sigma^2 - var_int / 3
+
+var_hive <- summary(bee_hive_mod)$sigma^2 - (summary(bee_agg_mod)$sigma^2)/3
+
 ```
 
 ```{r, echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("images/w4/statdewvalley.png")
+knitr::include_graphics("images/statdewvalley.png")
 ```
 
 ## Welcome to Statdew Valley!
 
 You're grandmother has asked you to take over her old farm plot in _Statdew Valley_. Armed with statistical knowledge, you set out to begin your new life!
 
-There are two of datasets for you to analyse to better understand the operation of your farm.
+There are two of datasets for you to analyze to better understand the operation of your farm.
 
 Note: The final 'hint' for code chunks will be the solution.
 
@@ -59,7 +88,7 @@ You can use R for so much more than just running regressions! This section is __
 1. Choose an image to pixelate to get your character. You'll need to have a URL for it (or you could edit the code for a local file). I think it is easiest to upload to GitHub (or Google Photos) and then right click to copy the image address.
 1. Play with the Shiny app interface for the pixelart package to help you get the settings right.
 1. Update these settings in the code below.
-1. [Super super optional] Post your character on the [optional discussion board for this week](https://q.utoronto.ca/courses/204826/discussion_topics/1061843?module_item_id=2273817). If you have a Stardew Valley character or some other pixel art of yourself, you can share that, too. This is just for fun, no requirement to participate. Please be sensible about making sure any images are _appropriate._ Don't use images of other people, etc. 
+1. [Super super optional] Post your character on the [optional discussion board for this week](https://q.utoronto.ca/courses/253305/discussion_topics/1616645). If you have a Stardew Valley character or some other pixel art of yourself, you can share that, too. This is just for fun, no requirement to participate. Please be sensible about making sure any images are _appropriate._ Don't use images of other people, etc. 
 
 ```{r pixelart, eval=FALSE}
 # Install pixel art
@@ -125,11 +154,11 @@ plot_color_matrix(colors_kmeans(im2, kmeans))
 ```
 
 ```{r, echo=FALSE, fig.align='center', out.width="25%"}
-knitr::include_graphics("images/w4/lb-for-statdew-valley.png")
+knitr::include_graphics("images/lb-for-statdew-valley.png")
 ```
 
 ```{r, echo=FALSE, fig.align='center', out.width="50%"}
-knitr::include_graphics("images/w4/lb-example.png")
+knitr::include_graphics("images/lb-example.png")
 ```
 
 
@@ -146,7 +175,7 @@ Tee patch has two plots, one for each fertilizer type. In each plot there are th
 4 tomatoes were chosen at random from each plant and weighed (reported in grams). This data is stored in `tomatoes`.
 
 ```{r, echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("images/w4/tomatoplot.png")
+knitr::include_graphics("images/tomatoplot.png")
 ```
 *Layout of tomato patch*
 
@@ -176,7 +205,7 @@ Create a plot with `plant` on the x axis, `weight` on the y axis and coloured by
 
 
 ```{r tom_plot-hint-1}
-# Any trouble with loadng the data? Paste this in to your coding area
+# Any trouble with loading the data? Paste this in to your coding area
 tomatoes <- tibble(
   plant = rep(1:6, each = 4),
   fertilizer = rep(c("basic", "quality"), each = 12),
@@ -346,7 +375,7 @@ question("Can you guess what we need to do to our data?",
          answer("Calculate average weight by fertilizer type and refit with formula `weight_avg ~ plant`"),
          answer("Calculate average weight by plant and refit with formula `weight_avg ~ fertilizer`", correct = TRUE),
          answer("Calculate average weight by plant and fertilizer and refit with formula `weight_avg ~ 1`"),
-         message = "We want to aggregate the data such that we have one value for each plant, the average weight of tomatoes from that plant. Then we will fit the model with the formula weight_avg ~ fertilizer."
+         message = "We want to aggregate the data such that we have one value for each plant, the average weight of tomatoes from that plant. Then we will fit the model with the formula `weight_avg ~ fertilizer`."
 )
 ```
 
@@ -430,7 +459,7 @@ Firstly, we can think about what variability that isn't explained by our fixed e
 While you can derive this yourself if you like, let's also take as true the following:
 $$\frac{\text{RSS}_{tom\_final}}{4} = \hat{\sigma_b}^2 + \frac{\hat{\sigma}^2}{4} $$.
 
-THe following just reruns the final code from the tasks above so I can use it.
+The following just reruns the final code from the tasks above so I can use it.
 
 ```{r, include = TRUE}
 tom_agg <- tomatoes %>% 
@@ -482,21 +511,12 @@ So, $\hat{b} \sim N(0,$ `r round(plant_effect_var, 2)` $)$ . As you might expect
 
 Your grandmother was a bit eccentric when it came to farm management. She swore that her bees produced more honey if she played them music in the morning. In fact, she even mentioned that she thought they particularly liked K-pop. 
 
-She left you some data that she thinks proves this. While the sample size isn't that large, you decide to take a look anyways. The data is called `honey` and records the honey produced each month for each of her 6 hives (in grams). Each hive listened to each of the song options (Dynamite by BTS, Adagio in B minor by Mozart and No music) for a month, three times. The order was randomized for each hive. It took 9 months to collect this data and the information your grandmother left you says honey production should have been fairly constant over this period and that all the hives experienced the same weather conditions, food access, etc.
+She left you some data that she thinks proves this. While the sample size isn't that large, you decide to take a look anyways. The data is called `honey` and records the honey produced each month for each of her 6 hives (in grams). Each hive listened to each of the song options (Butter by BTS, Adagio in B minor by Mozart and No music) for a month, three times. The order was randomized for each hive. It took 9 months to collect this data and the information your grandmother left you says honey production should have been fairly constant over this period and that all the hives experienced the same weather conditions, food access, etc.
 
 (Note: this is definitely not accurate to how beekeeping or weather actually works...but ignore this for our purposes.)
 
 ```{r, echo=FALSE, fig.align='center', out.width="10%"}
-knitr::include_graphics("images/w4/hive.png")
-```
-
-```{r, echo = FALSE}
-set.seed(95)
-honey <- tibble(
-  hive = rep(rep(1:6, each = 3), times = 3),
-  song = rep(c("No music", "Adagio in B minor by Mozart", "Dynamite by BTS"), each = 18),
-  honey_g = c(196.56,199.58,200.71,195.8,199.58,200.71,226.8,227.55,220.75,193.15,197.69,190.13,192.4,195.8,194.29,175.39,169.34,185.97,234.73,236.62,241.92,225.66,226.8,223.02,259.3,248.72,263.46,238.89,237.38,235.11,244.94,245.7,247.21,165.18,167.07,162.54,255.15,254.01,252.88,232.47,233.22,235.49,267.62,266.86,268.38,242.29,250.23,241.92,272.53,272.16,268.75,234.36,232.09,228.69))
-
+knitr::include_graphics("images/hive.png")
 ```
 
 ```{r, echo = FALSE, eval = FALSE}
@@ -525,10 +545,10 @@ glimpse(honey)
 ### Wrangle and plot the data
 
 ##### Wrangle
-1. Wrangle the honey data so that the `song` variable is a factor in this order: No music, Adagio in B minor by Mozart and Dynamite by BTS. 
+1. Wrangle the honey data so that the `song` variable is a factor in this order: No music, Adagio in B minor by Mozart and Butter by BTS. 
 1. Make `hive` a factor variable also.
 1. Save this over the original honey dataset.
-1. Then, using your new version of the `honey` dataset, create a new dataset called `honey_agg`, where you group by `hive` and `song` and summarize to find the average amount of honey produced by each hive while listening to a given song. Call your averaged variable `honey_avg`.
+1. Then, using your new version of the `honey` dataset, create a new dataset called `honey_agg_int`, where you group by `hive` and `song` and summarize to find the average amount of honey produced by each hive while listening to a given song. Call your averaged variable `honey_avg`.
 
 ```{r bee_wrangle, exercise = TRUE}
 
@@ -556,7 +576,7 @@ honey <- honey %>%
 
 ```{r bee_wrangle-hint-3}
 # the aggregated dataset should be created like this
-honey_agg <- honey %>%   
+honey_agg_int <- honey %>%   
   group_by(hive, song) %>% 
   summarize(honey_avg = mean(honey_g), .groups = "drop") 
 ```
@@ -567,14 +587,14 @@ honey <- honey %>%
   mutate(song = fct_relevel(song, "No music", after = 0)) %>% 
   mutate(hive = as_factor(hive)) 
   
-honey_agg <- honey %>%   
+honey_agg_int <- honey %>%   
   group_by(hive, song) %>% 
   summarize(honey_avg = mean(honey_g), .groups = "drop") 
 ```
 
 ##### Plot
 
-1. Plot the honey data with `song` on the x axis and `honey_avg` on the y axis.
+1. Plot the `honey_agg_int` data with `song` on the x axis and `honey_avg` on the y axis.
 1. In your aesthetic, you should also colour by hive and group by hive. (See the hint if you get stuck).
 1. Use the point and line geometries.
 1. Use `theme_minimal()` if you like.
@@ -594,7 +614,7 @@ honey_agg <- honey %>%
 
 ```{r bee_plot-solution}
 # This assumes you've run the correct code for the wrangling above
-honey_agg %>% 
+honey_agg_int %>% 
   ggplot(aes(x = song, y = honey_avg, colour = hive, group = hive)) +
   geom_point() +
   geom_line() +
@@ -641,8 +661,8 @@ where $y_{ijk}$ is the amount of honey produced (in grams) in the $k^{th}$ month
 
 #### Fit the models
 
-1. Fit an interaction model to predict honey production based on `song` and `hive`. Call it `bee_int`.
-1.Fit a main effects model to predict honey production based on `song` and `hive` (no interaction). Call it `bee_main`.
+1. Fit an interaction model (main effects and interactions) to predict honey production based on `song` and `hive`. Call it `bee_int_mod`.  
+1. Fit a main effects (no interactions) model to predict honey production based on `song` and `hive` (no interaction). Call it `bee_main`.  
 1. Compare these two models with ANOVA.
 
 ```{r bee_mod, exercise = TRUE, exercise.setup = "bee_wrangle"}
@@ -650,9 +670,9 @@ where $y_{ijk}$ is the amount of honey produced (in grams) in the $k^{th}$ month
 ```
 
 ```{r bee_mod-solution}
-bee_int <- lm(honey_g ~ song*hive, data = honey)
+bee_int_mod <- lm(honey_g ~ song*hive, data = honey)
 bee_main <- lm(honey_g ~ song + hive, data = honey)
-anova(bee_int, bee_main)
+anova(bee_int_mod, bee_main)
 ```
 
 ```{r beecheck4, echo=FALSE}
@@ -666,80 +686,252 @@ question("What do you think we can claim from the analysis above?",
 
 #### Model with our aggregated data
 
-1. Run a new model using the `honey_agg` data, where `honey_avg` is the response and song and hive are fixed effects, no interactions. Save the model as `bee_agg_mod`.
+1. Run a new model using the `honey_agg_int` data, where `honey_avg` is the response and song and hive are fixed effects, no interactions. Save the model as `bee_agg_mod`.
 1. Run an ANOVA on `bee_agg_mod`.
+
 
 ```{r bee_agg_mod, exercise = TRUE, exercise.setup = "bee_wrangle"}
 
 ```
 
-
 ```{r, bee_agg_mod-solution}
-bee_agg_mod <- lm(honey_avg ~ song + hive, data = honey_agg)
+bee_agg_mod <- lm(honey_avg ~ song + hive, data = honey_agg_int)
 anova(bee_agg_mod)
 ```
 
 The very low p-values you'll see above suggest that we can also reject $H_0: \sigma^2_b = 0$ and $H_0: \alpha_{BTS} = \alpha_{Mozart} = \alpha_{no\ song} = 0$ because it seems plausible that there is hive-to-hive variation, and that there are differences in honey production between the songs.
 
+### Describing our residuals
+
+Recall the formula for the residual sum of squares (RSS):
+
+
+$$RSS = \Sigma^{n}_{i=1} \color{green}{e_i}^2 = \Sigma^{n}_{i=1} (\color{orange}{y_i} - \color{blue}{\hat{y_i}})$$
+
+
+where:
+
+- $\color{green}{e_i}$ is the residual for observation $i$  
+- $\color{orange}{y_i}$ is the observed value of the response variable for the $i^{th}$ observation  
+- $\color{blue}{\hat{y_i}}$ is the __predicted__ value (from the model) for the $i^{th}$ observation  
+
+#### Calculate the residual sum of squares for the `bee_int_mod` model. Save it as `rss_int`.
+
+```{r bee_int_rss, exercise = TRUE, exercise.setup = "bee_wrangle"}
+
+```
+
+```{r, bee_int_rss-hint-1}
+# Hint
+# The predict() function applied to the model object will give you a vector of predicted values, in the same order as the data you used to fit the model
+predict(bee_int_mod)
+```
+
+```{r, bee_int_rss-hint-2}
+# Hint
+# Gimme the honey, honey! Pull the the actual observed values from the original data set with the $
+honey$honey_g
+```
+
+```{r, bee_int_rss-solution}
+# Solution
+rss_int <- sum((honey$honey_g - predict(bee_int_mod))^2)
+```
+
+
+$$RSE = \sqrt{\frac{RSS}{\color{red}n-\color{blue}p-1}}$$
+
+where:
+
+- $RSS$ is the residual sum of squares
+- $\color{red}n$ is the number of observations in your dataset (that are being used for the model, must be complete cases for the variables being used)
+- $\color{blue}p$ is the number of coefficients being estimated in our model (not including the intercept)
+
+#### Calculate the RSE for the `bee_int_mod` model.
+
+- Start by getting the sample size from the data (i.e., don't 'hard code' it). Save it as `n_int`.  
+  - Hint: `nrow()` is a useful function for finding the number of rows of a dataset.  
+- Calculate the degrees of freedom for your model. This is 'easy' (for a given value of easy...) to do by hand for balanced designs, but not something you'll do for more complicated models in practice. 
+  - Hint: $n-p-1$ 
+  - Save the value as `df_int`
+- Finally, use these objects and `rss` calculated above to calculate the RSE. Save the object as `rse_int`.  
+  - You can check if you are right by comparing to the RSE from the fitted model: `Residual standard error: 3.634 on 36 degrees of freedom`  
+  - You can also check it directly with `summary(bee_int_mod)$sigma`
+
+```{r bee_int_rse, exercise = TRUE, exercise.setup = "bee_wrangle"}
+
+```
+
+```{r, bee_int_rse-hint-1}
+# There are 54 observations
+# There are 17 coefficients being estimated + the intercept
+
+# n - p - 1 will be the same as n - IJ  here (main effects and interactions)
+IJ <- 6*3
+
+# Optional: Here is a handy way to count coeffs, note the intercept is included in the count
+nrow(summary(bee_int_mod)$coefficients)
+```
+
+```{r bee_int_rse-solution}
+# Number of observations
+n_int <- nrow(honey)
+n_int
+
+# Degrees of freedom for the model
+df_int <- n_int - nrow(summary(bee_int_mod)$coefficients)
+df_int
+
+# Calculate RSE
+rse_int <- sqrt(rss_int/(df_int))
+rse_int
+
+# Check RSE from the model
+summary(bee_int_mod)
+
+# We can pull the value directly from the model summary with $sigma
+summary(bee_int_mod)$sigma
+```
+
+
 ### Calculating our random effect variances
 
-In this section I'm just going claim a couple equations for how we can partition (separate into components) the unexplained variation in the models we have fit. We'll go into the math of these variances as we need it next week. There is plenty that R will do for us, and things will get a little messier when we leave the safety of balanced designs. See the Wood reading referenced in the credits if you want to cover this further now. Optional, not assessed.
+#### Overview
 
-Basically, I want you to take away from this section that we can estimate how much our different sources of variations are each contributing to our overall variation.
+In this section I'm just going claim a couple equations for how we can partition (separate into components) the unexplained variation in the models we have fit. 
 
-Our unexplained variability, after fitting the interaction model, `bee_int`, gives us our $\sigma^2$, i.e., the variability of the error term is $\sigma^2 = 3.63^2$.
+We will have a variance component for every one of our random effects (and interactions between a fixed and random effect are also random effects themselves!) as well as the overall residual variance.
 
-```{r beesummary}
-honey <- honey %>% 
-  mutate(song = fct_relevel(song, "No music", after = 0)) %>% 
-  mutate(hive = as_factor(hive)) 
-  
-honey_agg <- honey %>%   
-  group_by(hive, song) %>% 
-  summarize(honey_avg = mean(honey_g), .groups = "drop") 
+We can use this to claim what proportion of variance is explained by our different random effects and what proportion remains unexplained by our variables.
 
-bee_int <- lm(honey_g ~ song*hive, data = honey); summary(bee_int)
-bee_main <- lm(honey_g ~ song + hive, data = honey); summary(bee_main)
-bee_agg_mod <- lm(honey_avg ~ song + hive, data = honey_agg); summary(bee_agg_mod)
+I practice, we'll let R handle this for us, especially as things will get a little messier when we leave the safety of balanced designs. See the Wood reading referenced in the credits if you want to cover this further now. Optional, _not_ assessed.
+
+Basically, I want you to take away from this section that __we can estimate how much our different sources of variation are each contributing to our overall variation.__
+
+#### Unexplained variance after fitting the interaction model 
+
+As we saw above, our unexplained variability, after fitting the interaction model (the most complicated linear model possible for this data), `bee_int_mod`, gives us our $\sigma^2$, i.e., the variability of the error term is $\sigma^2 = 3.63^2$.
+
+Save the squared residual standard error from the `bee_int_mod` model as `var_int`.
+
+
+```{r setvarint, exercise = TRUE}
+
 ```
 
-$$\sigma^2 = $$
-```{r, include = TRUE}
-# unexplained variation after fitting the most complicated model
-summary(bee_int)$sigma^2
+```{r setvarint-solution}
+# Solution
+var_int <- summary(bee_int_mod)$sigma^2
+var_int
 ```
 
-$$\text{RSE}_{bee\_main}^2 = \sigma_{\alpha b}^2 + \frac{\sigma^2}{K} $$
+#### RSE for main model
 
-$$\sigma_{\alpha b}^2 = \text{RSE}_{bee\_main}^2 - \frac{\sigma^2}{K} = $$
+Next, we want to consider the what portion of the variability is explained by the interaction of hive and song. Our `bee_agg_mod` residual variance will come from two sources: the variance that CAN be explained by the interaction of hive and song AND the variability we cannot explain (even with out most complicated model), our random error.  
 
-```{r, include = TRUE}
-# variation explained by the interaction of song and hive
-# k is the number of songs
-summary(bee_main)$sigma^2 - (summary(bee_int)$sigma^2) / 3
+$$\text{RSE}_{bee\_agg}^2 = \sigma_{\alpha b}^2 + \frac{\sigma^2}{K} $$
+
+So, $\text{RSE}_{bee\_agg}$ is the `sigma` value calculated from our main effects only model on the aggregated data, and $K$ is the number of observations at each level of our interaction, i.e., the number of levels we have averaged over in aggregating this data. We want this value as we can use it to take the average of the squared errors from our interaction model (remember that $sigma^2$ is the RSE squared.)
+
+We can get $K$ from the context, by understanding that each hive was exposed to each song for 3 months and honey production was measured monthly. OR we can remember that this design is balanced and divide the total sample size ($n = 54$) by the number of combinations (levels of interaction) which will be 6 hives times 3 songs, which is then $\frac{54}{6\cdot 3} = 3$.
+
+Doing some rearranging, we now can calculate $\sigma_{\alpha b}^2$ from other values we have available to us.
+
+$$\sigma_{\alpha b}^2 = \text{RSE}_{bee\_agg}^2 - \frac{\sigma^2}{K} = $$ `r round(var_ab, 2)`
+
+Calculate $\sigma_{\alpha b}^2$ and save it as `var_ab`.
+
+```{r setvarab, exercise = TRUE}
+
 ```
 
-Finally, to get $\sigma^2_{b}$ we do one final aggregation and model:
+```{r setvarab-solution}
+# Solution
+var_ab <- summary(bee_agg_mod)$sigma^2 - var_int / 3
+var_ab
+```
 
-```{r}
-honey_agg2 <- honey_agg %>% 
+#### Hive-to-hive variance
+
+Finally, to get $\sigma^2_{b}$ we do one final aggregation and model.
+
+Start by creating a new dataset called `honey_agg_hive`.
+
+- Start with the `honey` data  
+- Group by `hive`  
+- Use summarize to get the `honey_avg_hive`  
+  - You can use `.groups = "drop"` as an argument in your `summarize` call if you are getting a message about dropping groups.
+
+```{r agghive, exercise=TRUE, exercise.setup = "beesummary"}
+
+```
+
+```{r agghive-solution}
+# Solution
+honey_agg_hive <- honey %>% 
   group_by(hive) %>% 
-  summarize(honey_avg2 = mean(honey_avg), .groups = "drop")
-honey_agg2
+  summarize(honey_avg_hive = mean(honey_g))
 
-honey_hive <- lm(honey_avg2 ~ 1, data = honey_agg2); summary(honey_hive)
-
-# Notice that the RSE here is just the variance of the average honey production for each hive
-sqrt(var(honey_agg2$honey_avg2))
+honey_agg_hive
 ```
 
-$$ \sigma_b^2 = \text{RSE}_{honey\_hive}^2 - \frac{\text{RSE}_{bee\_main}^2}{K}$$
+Once you have your `honey_agg_hive` dataset, use it to fit an **intercept-only** model, saved as `bee_hive` that effectively just calculate one coefficient, the grand mean of honey production in our data. The __RSE__ for this model is really the same as the standard deviation of average honey production, hive-to-hive.
+
+```{r varhth, exercise=TRUE, exercise.setup = "beesummary"}
+
+```
+
+```{r varhth-solution}
+bee_hive <- lm(honey_avg_hive ~ 1, data = honey_agg_hive)
+summary(bee_hive)
+
+# Notice that the RSE here is just the SD of the average honey production hive-to-hive
+sqrt(var(honey_agg_hive$honey_avg_hive))
+```
+
+So now we can take our hive-to-hive variability subtract the variability explained by the song and hive main effects, and find the variability in honey output hive-to-hive not explained by song or song/hive interactions. We are dividing by I (the number of songs) because we are averaging across them.
+
+$$ \sigma_b^2 = \text{RSE}_{bee\_hive}^2 - \frac{\text{RSE}_{bee\_agg}^2}{I}$$
+
+```{r varhive, exercise=TRUE}
+
+```
+
+```{r varhive-solution}
+# hive to hive variation, not explained by song or song/hive interaction
+var_hive <- summary(bee_hive_mod)$sigma^2 - (summary(bee_agg_mod)$sigma^2)/3
+var_hive
+```
+
+
+#### Summary of all our calculated error variances
 
 ```{r}
-# hive to hive variation, not explained by song
-# k is the number of songs
-summary(honey_hive)$sigma^2 - (summary(bee_main)$sigma^2)/3
+# variance in honey production explained by the interaction of song and hive
+var_ab <- summary(bee_agg_mod)$sigma^2 - var_int / 3
+var_ab
+
+# variance in honey production explained by hive to hive variance
+var_hive <- summary(bee_hive_mod)$sigma^2 - (summary(bee_agg_mod)$sigma^2)/3
+var_hive
+
+# residual variance (unexplained)
+var_int <- summary(bee_int_mod)$sigma^2
+var_int
+
 ```
+
+We can all talk about the proportion of variance explained by each of our sources of variation. This is also  called intraclass correlation coefficient (ICC) or the variance partition coefficient (VPC). We can calculate it by finding the sum 
+
+```{r}
+tibble(Source = c("song:hive", "hive", "residual"),
+`Proportion of variance explained` = c(var_ab / (var_ab + var_hive + var_int),
+var_hive / (var_ab + var_hive + var_int),
+var_int / (var_ab + var_hive + var_int))) %>% 
+  knitr::kable()
+```
+
+
 
 ```{r beecheck3, echo=FALSE}
 question("Which of our random effects explains the greatest variance in the honey production, after controlling for our fixed effects?",
@@ -755,9 +947,70 @@ question("Which of our random effects explains the greatest variance in the hone
 
 Do you think you have enough information to come to a conclusion about whether the playing music improves honey production? Do your grandmother's bees actually like k-pop best of the options?
 
+
+#### Summary
+
+Note the below notation is is based on using least squares and treating all variables as fixed effects. This isn't the way you would explain a linear model in practice, but I hope helps you see how we are thinking about partitioning our variance. It also helps remind us that regression is just fancy averaging.
+
+```{r, echo=FALSE}
+knitr::include_graphics("images/fancyaveraging.png")
+```
+
+[Link to tweet](https://twitter.com/ajeanstevenson/status/1488601482505060352)
+
+Note: The $\cdot$ you'll see in some of the following subscripts indicate where we are aggregating and averaging across that level of the data.
+
+
+##### Full interaction model (includes main effects) (`bee_int_mod`)
+
++-----------------------------------------+-------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+
+| In R                                    | Notation                                                                                                                | RSE                                                                                          |
++=========================================+=========================================================================================================================+==============================================================================================+
+| `lm(honey_g ~ song*hive, data = honey)` | $y_{ijk} = \mu + \alpha_i + b_j + (\alpha b)_{ij} + \epsilon_{ijk}$                                                     | $RSE^2$ is $\sigma^2$ is the unexplained variation after fitting the most complicated model. |
+|                                         |                                                                                                                         |                                                                                              |
+|                                         | **Traditional linear regression**                                                                                       |                                                                                              |
+|                                         |                                                                                                                         |                                                                                              |
+|                                         | $y_{ijk} = \beta_0 + \beta_2 \text{song}_i + \beta_2\text{hive}_j + \beta_3\text{song}_i\text{hive}_j + \epsilon_{ijk}$ |                                                                                              |
+|                                         |                                                                                                                         |                                                                                              |
+|                                         | \                                                                                                                       |                                                                                              |
+|                                         | These are equivalent, just with different contrasts (how we set up our model matrix).                                   |                                                                                              |
++-----------------------------------------+-------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+
+
+##### Main effects only model, on hive/song aggregated data (`bee_agg_mod`)
+
++-----------------------------------------------+----------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| In R                                          | Notation                                                                               | RSE                                                                                                                                                                                    |
++===============================================+========================================================================================+========================================================================================================================================================================================+
+| `lm(honey_g ~ song + hive, data = honey_agg)` | $y_{ij\cdot} = \mu + \alpha_i + b_j + \epsilon_{ij}$                                   | The $RSE^2$ here is the unexplained variation in the average honey production after accounting for the main effects of song and hive. We will use it to help find $\sigma_{\alpha b}$. |
+|                                               |                                                                                        |                                                                                                                                                                                        |
+|                                               | where                                                                                  |                                                                                                                                                                                        |
+|                                               |                                                                                        |                                                                                                                                                                                        |
+|                                               | $\epsilon_{ij} = (\alpha b)_{ij}+\frac{1}{K}\Sigma_{k=1}^n$                            |                                                                                                                                                                                        |
+|                                               |                                                                                        |                                                                                                                                                                                        |
+|                                               | **Traditional linear regression**                                                      |                                                                                                                                                                                        |
+|                                               |                                                                                        |                                                                                                                                                                                        |
+|                                               | $y_{ij\cdot} = \beta_0 + \beta_2 \text{song}_i + \beta_3\text{hive}_j + \epsilon_{ij}$ |                                                                                                                                                                                        |
++-----------------------------------------------+----------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+##### Intercept only model for hives averages (`bee_hive_mod`)
+
++-------------------------------------+-------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| In R                                | Notation                                                                      | RSE                                                                                                                                                                               |
++=====================================+===============================================================================+===================================================================================================================================================================================+
+| `lm(honey_g ~ 1, data = honey_agg)` | $y_{\cdot j \cdot} = \mu + \frac{1}{I}\Sigma^I_{i = 1}\alpha_i +  \epsilon_j$ | The $RSE^2$ here is hive-to-hive variation in average honey output (without taking into account the interaction between hive and song). We will use it to help find $\sigma_{b}$. |
+|                                     |                                                                               |                                                                                                                                                                                   |
+| (note aggregated dataset)           | where:                                                                        |                                                                                                                                                                                   |
+|                                     |                                                                               |                                                                                                                                                                                   |
+|                                     | $\epsilon_j = b_j + \frac{1}{I}\Sigma\epsilon_j$                              |                                                                                                                                                                                   |
+|                                     |                                                                               |                                                                                                                                                                                   |
+|                                     | **Traditional linear regression**                                             |                                                                                                                                                                                   |
+|                                     |                                                                               |                                                                                                                                                                                   |
+|                                     | $y_{\cdot j\cdot} = \beta_0 + \epsilon_{j}$                                   |                                                                                                                                                                                   |
++-------------------------------------+-------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
 ## Where to next?
 
-We've done pretty much everything we can while remaining in the ordinary least squares context, and even in the simplest examples, all the aggregating and model fitting we're doing will get a little tedious. Next we will turn to fitting **linear mixed models** more sophisticatedly with specialist packages.
+We've done pretty much everything we can while remaining in the ordinary least squares context, and even in the simplest examples, all the aggregating and model fitting we're doing will get a little tedious. Now we will turn to fitting **linear mixed models** more in more sophisticated ways with a specialist package.
 
 The models we'll be fitting will rely on maximum likelihood methods.
 
