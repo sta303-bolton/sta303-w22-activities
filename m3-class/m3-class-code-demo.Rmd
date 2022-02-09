@@ -7,7 +7,7 @@ output:
   pdf_document: default
 ---
 
-> *I grow rows and rows of roses*
+> *I grow rows and rows of roses*  
 > *Flor de mayo, by the mile*
 
 
@@ -19,9 +19,9 @@ output:
 
 There are 5 greenhouses on your rose farm, North, East, South, West and Central. They are at different levels of modernization as it can be very expensive to replace and update irrigation systems and other fixtures. You hope to be making some general improvements.
 
-THere are 4 varieties of red rose that your farm specilizes in: Devotion, Checkmate, Wanted, and Hearts.
+THere are 4 varieties of red rose that your farm specializes in: Devotion, Checkmate, Wanted, and Hearts.
 
-Within each greenhouse, there are 32 plots. In prepration for the 2021 Valentine's Day, you planted equal plots of each of the special varieties in each greenhouse. Then the flowers were cut and sold and it was recorded how much net profit was made per plot.
+Within each greenhouse, there are 32 plots. In preparation for the 2021 Valentine's Day, you planted equal plots of each of the special varieties in each greenhouse. Then the flowers were cut and sold and it was recorded how much net profit was made per plot.
 
 Now, you want to understand your data from last year and make predictions about your 2022 profits. (Ignoring inflation, which probably shouldn't do, eh? Yikes. The economy, amirite?)
 
@@ -29,7 +29,7 @@ Now, you want to understand your data from last year and make predictions about 
 
 This setup chunk load the function that will 'grow' our roses (and profit data) for us. For this class demo, we will all have the same rose data, but you will have different data to your peers in the portfolio.
 
-We don't really need to do the seed set up and everythinh here, but I wanted to give you a useful example for your portfolio. Be very careful about relative paths to files. MarkUs autograding will be set up based on the same structure as the JupyterHub and will require relative paths
+We don't really need to do the seed set up and everything here, but I wanted to give you a useful example for your portfolio. Be very careful about relative paths to files. MarkUs autograding will be set up based on the same structure as the JupyterHub and will require relative paths
 
 
 ## Teaching and learning world
