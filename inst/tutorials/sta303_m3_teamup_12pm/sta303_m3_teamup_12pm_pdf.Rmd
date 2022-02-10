@@ -1,14 +1,13 @@
 ---
-title: "STA303: M3 Team Up! activity"
-subtitle: "Return to Statdew Valley"
-output: learnr::tutorial
-css: "css/learnr_303.css"
-runtime: shiny_prerendered
+title: 'STA303: M3 class activity'
+subtitle: Return to Statdew Valley
+output: pdf_document
 ---
+
 
 ```{r setup, include = FALSE}
 # These are the packages you will need for this activity
-packages_needed <- c("tidyverse", "learnr", "lme4")
+packages_needed <- c("tidyverse", "lme4")
 
 package.check <- lapply(
   packages_needed,
@@ -21,7 +20,6 @@ package.check <- lapply(
 
 # Credit: package.check based on a helpful post from Vikram Baliga https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/
 
-library(learnr)
 library(tidyverse)
 library(lme4)
 
@@ -66,7 +64,7 @@ Note 2: There are hints for some questions, but if you get really stuck, please 
 
 ## Data
 
-```{r, echo=FALSE, fig.align='center', out.width="20%", fig.show='hold', fig.align = 'center'}
+```{r, echo=FALSE, fig.align='center', out.width="50%"}
 knitr::include_graphics(c("images/rose-varieties.png", "images/greenhouse.png"))
 ```
 
@@ -99,9 +97,6 @@ To answer the following question, wrangle and plot the rose data as follows:
 1. Use points as your geometry. (There is probably a bit of overprinting, but we won't worry about that here.)
 1. You can add `theme_minimal()` if you like, but use the default colour palette.
 
-```{r plot, exercise = TRUE}
-
-```
 
 ```{r plot-hint-1}
 # fct_relevel() can help you change the order of the levels of a factor. 
@@ -126,21 +121,12 @@ roses %>%
 **Which greenhouse and variety combination had the lowest profit __blue__ dot on your graph?**
 
 **
-A. Devotion variety in Central greenhouse.  
-B. Wanted variety in the West greenhouse.  
-C. Hearts variety in the South greenhouse.  
+A. Devotion variety in Central greenhouse.
+B. Wanted variety in the West greenhouse.
+C. Hearts variety in the South greenhouse. 
 D. Impossible to say.  
 **
 
-```{r q1, include=FALSE}
-question("What is the correct answer?",
-         answer("A"),
-         answer("B", correct = TRUE),
-         answer("C"),
-         answer("D"),
-         message = "See the final hint for the full code to generate the graph."
-)
-```
 
 
 ## Question 2
@@ -154,15 +140,6 @@ C. We should make greenhouse a random effect and variety a fixed effect and cons
 D. We should make everything a random effect.
 **
 
-```{r q2, include=FALSE}
-question("What is the correct answer?",
-         answer("A"),
-         answer("B"),
-         answer("C", correct = TRUE),
-         answer("D"),
-         message = "We want to interpret variety, so it should be a fixed effect. We expect roses from the same greenhouse to potentially be more similar to each other than roses across greenhouses due to the different levels of modernization across them, i.e., correlated. We don't want to interpret greenhouse effects, and it won't help us make predictions for new greenhouses, but we shouldn't ignore the fact that it violates our assumptions of linear regression. Thus, we'll make greenhouse a random effect. As each greenhouse also has roses of each variety, we're interested in accounting for interactions between greenhouse and variety as well."
-)
-```
 
 ## Question 3
 
@@ -188,15 +165,6 @@ C. 8
 D. 32
 **
 
-```{r q3, include=FALSE}
-question("What is the correct answer?",
-         answer("A"),
-         answer("B"),
-         answer("C", correct = TRUE),
-         answer("D"),
-         message = "8, because there are 8 plots of each vareity in each greenhouse."
-)
-```
 
 ## Question 4
 
@@ -220,15 +188,6 @@ C. There are three random quantities being estimated.
 D. $b_j \sim N(0, \sigma_b^2)$ in this model.
 **
 
-```{r q4, include=FALSE}
-question("What is the correct answer?",
-         answer("A", correct = TRUE),
-         answer("B"),
-         answer("C"),
-         answer("D"),
-         message = "The interaction of a fixed effect and a random effect is ALSO a random effect, so A is not tue as only $\alpha_i$ is a fixed effect."
-)
-```
 
 ## Question 5
 
@@ -243,7 +202,7 @@ C. A is $\hat{\sigma}_{\alpha b}^2$, B is $\hat{\sigma}_b^2$, C is $\hat{\sigma}
 D. A is $\hat{\sigma}_{\alpha b}^2$, B is __not__ actually one of the variances for our random effects, C is $\hat{\sigma}^2$.  
 **
 
-```{r models, exercise = TRUE, exercise.lines = 20}
+```{r models, eval=FALSE}
 # Fit a model with profit as the response and the main effects 
 # and interaction of variety and greenhouse as the explanatory variables
 roses_int_mod <- lm(__________, data = roses)
@@ -393,15 +352,6 @@ summary(mod)
 ```
 
 
-```{r q5, include=FALSE}
-question("What is the correct answer?",
-         answer("A"),
-         answer("B"),
-         answer("C", correct = TRUE),
-         answer("D"),
-         message = "See the hints for full discussion."
-)
-```
 
 ## Question  6
 
@@ -426,17 +376,5 @@ B. This dataset is NOT tidy for our purposes because each observational unit has
 C. This dataset is NOT tidy for our purposes because it is not the case that each value is in one and only one cell.  
 D. This dataset is NOT tidy for our purposes because it is not the case that each variable is in one and only one column.  
 **
-
-```{r q6, include=FALSE}
-question("What is the correct answer?",
-         answer("A"),
-         answer("B"),
-         answer("C"),
-         answer("D", correct = TRUE),
-         message = "Variety should be one column, but here the levels of vareity are split across several columns."
-)
-```
-
-
 
 
