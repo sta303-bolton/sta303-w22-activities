@@ -1,5 +1,5 @@
 ---
-title: "STA303: M3 class activity"
+title: "STA303: M3 Team Up! activity"
 subtitle: "Return to Statdew Valley"
 output: learnr::tutorial
 css: "css/learnr_303.css"
@@ -66,8 +66,8 @@ Note 2: There are hints for some questions, but if you get really stuck, please 
 
 ## Data
 
-```{r, echo=FALSE, fig.align='center', out.width="50%", out.extra="HOLD"}
-#knitr::include_graphics(c("images/rose-varieties.png", "images/greenhouse.png"))
+```{r, echo=FALSE, fig.align='center', out.width="20%", fig.show='hold'}
+knitr::include_graphics(c("images/rose-varieties.png", "images/greenhouse.png"))
 ```
 
 This Team Up! activity uses the date and ideas from the rose  example we started to explore in synchronous class on Wednesday (Feb 9). I have improved the description a little so it hopefully makes sense alone, without my additional commentary.
