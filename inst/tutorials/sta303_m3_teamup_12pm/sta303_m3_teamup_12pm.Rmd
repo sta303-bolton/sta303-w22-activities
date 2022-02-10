@@ -1,0 +1,442 @@
+---
+title: "STA303: M3 class activity"
+subtitle: "Return to Statdew Valley"
+output: learnr::tutorial
+css: "css/learnr_303.css"
+runtime: shiny_prerendered
+---
+
+```{r setup, include = FALSE}
+# These are the packages you will need for this activity
+packages_needed <- c("tidyverse", "learnr", "lme4")
+
+package.check <- lapply(
+  packages_needed,
+  FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE, repos = "http://cran.us.r-project.org")
+    }
+  }
+)
+
+# Credit: package.check based on a helpful post from Vikram Baliga https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/
+
+library(learnr)
+library(tidyverse)
+library(lme4)
+
+knitr::opts_chunk$set(echo = FALSE)
+
+roses <- tibble(
+  greenhouse = rep(rep(c("north", "east", "south", "west", "central"), each = 8), times = 4),
+  variety = rep(c("Devotion", "Checkmate", "Wanted", "Hearts"), each = 8*5),
+  profit = c(23440, 20420, 23860, 28740, 29100, 24730, 23860, 24110, 26560,
+               22040, 20430, 20780, 20160, 23600, 23590, 20480, 25270, 21860,
+               20250, 22720, 18890, 21630, 25450, 23300, 18760, 20190, 19090,
+               20100, 19140, 19560, 16080, 19880, 22760, 22540, 23610, 17950,
+               22990, 18820, 22550, 19670, 29490, 27600, 26670, 30530, 28600,
+               30010, 33300, 29520, 20670, 25450, 20080, 23470, 18790, 23340,
+               21170, 23820, 25010, 20340, 20330, 21080, 20580, 21110, 24350,
+               25810, 15340, 17620, 20220, 16870, 15040, 21450, 22270, 15750,
+               23030, 27940, 22520, 23640, 26360, 21950, 22460, 22680, 24640,
+               27380, 25210, 27290, 21980, 23560, 19850, 24880, 14460, 20310,
+               15070, 14060, 16040, 13800, 17740, 13910, 16590, 15700, 19110,
+               15120, 13810, 15470, 16380, 14930, 11770, 9600, 11260, 8880,
+               10180, 11330, 15540, 9700, 15020, 16200, 15210, 17060, 16720,
+               15560, 13510, 18350, 32770, 36410, 34050, 35060, 38840, 35120,
+               33980, 35940, 32150, 26920, 28880, 27100, 28300, 25800, 25600,
+               26930, 22000, 24000, 19610, 25240, 24080, 20570, 23210, 19320,
+               28100, 29680, 24920, 22880, 27650, 24280, 25320, 27740, 25750,
+               28180, 26800, 28300, 29590, 23020, 26930, 26090)/1000)
+```
+
+
+## Instructions
+
+To participate in this activity you will need have to two windows readily available to you:
+
+1) Your Zoom window  
+2) The Team Up! activity linked from Quercus in a browser window for voting.
+
+I would recommend that one member of the team shares their screen with the rest of the team and shows this activity where you can see the question and options.
+
+Note 1: In the Team Up! activity you will just see the letters for the questions, not the options themselves. 
+
+Note 2: There are hints for some questions, but if you get really stuck, please use the 'Ask for Help' option in Zoom, our join the Zoom main room. 
+
+## Data
+
+```{r, echo=FALSE, fig.align='center', out.width="50%", out.extra="HOLD"}
+#knitr::include_graphics(c("images/rose-varieties.png", "images/greenhouse.png"))
+```
+
+This Team Up! activity uses the date and ideas from the rose  example we started to explore in synchronous class on Wednesday (Feb 9). I have improved the description a little so it hopefully makes sense alone, without my additional commentary.
+
+Suppose, you run a series of greenhouses in which you grow hot house roses. In preparation for Valentine's Day LAST year, you planted an equal number of plots of each of the four special varieties of red rose you have in each greenhouse. Then the flowers were cut and sold and it was recorded how much net profit was made per plot (in 000s of dollars).
+
+At the time there were 5 greenhouses, and they were all at different levels of modernization as it can be very expensive to replace and update irrigation systems and other fixtures. You hope to continue making general improvements and have since acquired 3 more greenhouses.
+
+- The 5 original green houses are referred to as North, East, South, West and Central.
+- There are 4 varieties of red rose that your buisness specializes in: Devotion, Checkmate, Wanted, and Hearts.
+- Within each greenhouse, there are 32 plots. 
+
+Now, you want to understand your data from last year and make predictions about your 2022 profits, as well as consider how you might prioritize which varieties to grow more of in your new greenhouses. 
+
+
+```{r}
+glimpse(roses)
+```
+
+
+## Question 1
+
+To answer the following question, wrangle and plot the rose data as follows:
+
+1. Change the order of the levels of the variety factor so that instead of being alphabetical, they go: "north", "south", "east", "west", "central".
+  - This WON'T change the way the data appears when you view it from the environment pane but WILL change how ggplot plots it. 
+1. Pipe this changed `roses` data directly into a ggplot.
+1. Put `greenhouse` on your x-axis, `profit` on your y, and colour by `variety`.
+1. Use points as your geometry. (There is probably a bit of overprinting, but we won't worry about that here.)
+1. You can add `theme_minimal()` if you like, but use the default colour palette.
+
+```{r plot, exercise = TRUE}
+
+```
+
+```{r plot-hint-1}
+# fct_relevel() can help you change the order of the levels of a factor. 
+
+# fct_relevel(variablename, "level you want first", "level you want second", "etc.")
+
+```
+
+```{r plot-hint-2}
+# Inside your ggplot() command, your aesthetic should look like this: aes(x = variety, y = profit, colour = greenhouse)
+
+```
+
+```{r plot-solution, echo=FALSE, eval = FALSE}
+roses %>% 
+  mutate(greenhouse = fct_relevel(greenhouse, "north", "south", "east", "west", "central" )) %>% 
+  ggplot(aes(x = variety, y = profit, colour = greenhouse)) +
+  geom_point() +
+  theme_minimal()
+```
+
+**Which greenhouse and variety combination had the lowest profit __blue__ dot on your graph?**
+
+**
+A. Devotion variety in Central greenhouse.
+B. Wanted variety in the West greenhouse.
+C. Hearts variety in the South greenhouse. 
+D. Impossible to say.  
+**
+
+```{r q1, include=FALSE}
+question("What is the correct answer?",
+         answer("A"),
+         answer("B", correct = TRUE),
+         answer("C"),
+         answer("D"),
+         message = "See the final hint for the full code to generate the graph."
+)
+```
+
+
+## Question 2
+
+Considering the `roses` data described in the Data section and the plot you made, which ONE of the following statements best describes an appropriate analysis for this data?
+
+**
+A. We can approach this analysis with linear regression (all fixed effects) as all our assumptions appear to be valid.  
+B. We should make variety a fixed effect and greenhouse as a random effect.  
+C. We should make greenhouse a random effect and variety a fixed effect and consider including a greenhouse-variety interaction (also a random effect).  
+D. We should make everything a random effect.
+**
+
+```{r q2, include=FALSE}
+question("What is the correct answer?",
+         answer("A"),
+         answer("B"),
+         answer("C", correct = TRUE),
+         answer("D"),
+         message = "We want to interpret variety, so it should be a fixed effect. We expect roses from the same greenhouse to potentially be more similar to each other than roses across greenhouses due to the different levels of modernization across them, i.e., correlated. We don't want to interpret greenhouse effects, and it won't help us make predictions for new greenhouses, but we shouldn't ignore the fact that it violates our assumptions of linear regression. Thus, we'll make greenhouse a random effect. As each greenhouse also has roses of each variety, we're interested in accounting for interactions between greenhouse and variety as well."
+)
+```
+
+## Question 3
+
+The below code aggreagtes the data to get the average profit by greenhouse and variety.
+
+```{r agg, exercise = TRUE}
+# Group by both variety and greenhouse 
+agg_int <- roses %>% 
+  group_by(variety, greenhouse) %>% 
+  summarize(profit_avg = mean(profit), .groups = "drop") 
+
+# .groups = "drop" means we won't get a message about grouping
+
+agg_int
+```
+
+**How many values are averaged to get each observation of `profit_avg` in `agg_int`?**
+
+**
+A. 4   
+B. 5  
+C. 8  
+D. 32
+**
+
+```{r q3, include=FALSE}
+question("What is the correct answer?",
+         answer("A"),
+         answer("B"),
+         answer("C", correct = TRUE),
+         answer("D"),
+         message = "8, because there are 8 plots of each vareity in each greenhouse."
+)
+```
+
+## Question 4
+
+Suppose an appropriate model for this data is:
+$$y_{ijk} = \mu + \alpha_i + b_j + (\alpha b)_{ij} + \epsilon_{ijk}$$
+
+where: 
+
+* $\mu$ is the grand mean profit of strawberries, in thousands of dollars, across all the data.  
+* $\alpha_i$ is the fixed effect of variety.  
+* $b_j$ is the random effect of greenhouse, $N(0, \sigma^2_{b})$. 
+* $(\alpha b)_{ij}$ is in interaction between variety and greenhouse, $N(0, \sigma^2_{\alpha b})$.
+* $\epsilon_{ijk}$ is the error term, $N(0, \sigma^2)$.  
+
+Which ONE of the following statements is FALSE? (Notice, FALSE _not_ TRUE!)
+
+**
+A. $\alpha_i$ and $(\alpha b)_{ij}$ are the only fixed effects in this model.  
+B. $\mu$ is the same for all values of i, j and k.  
+C. There are three random quantities being estimated.  
+D. $b_j \sim N(0, \sigma_b^2)$ in this model.
+**
+
+```{r q4, include=FALSE}
+question("What is the correct answer?",
+         answer("A", correct = TRUE),
+         answer("B"),
+         answer("C"),
+         answer("D"),
+         message = "The interaction of a fixed effect and a random effect is ALSO a random effect, so A is not tue as only $\alpha_i$ is a fixed effect."
+)
+```
+
+## Question 5
+
+This question takes you theough the 'teaching and learning' world version of thinkinga bout sources of variance with random effects.
+
+Which of the following correctly describes what each of the values being calculated under A, B and C below is matches with in the model specification? (Scroll!)
+
+**
+A. A is $\hat{\sigma}^2$, B is $\hat{\sigma}_b^2$, C is $\hat{\sigma}_{\alpha b}^2$.  
+B. A is $\hat{\sigma}_b^2$, B is $\hat{\sigma}^2$, C is $\hat{\sigma}_{\alpha b}^2$.  
+C. A is $\hat{\sigma}_{\alpha b}^2$, B is $\hat{\sigma}_b^2$, C is $\hat{\sigma}^2$.  
+D. A is $\hat{\sigma}_{\alpha b}^2$, B is __not__ actually one of the variances for our random effects, C is $\hat{\sigma}^2$.  
+**
+
+```{r models, exercise = TRUE, exercise.lines = 20}
+# Fit a model with profit as the response and the main effects 
+# and interaction of variety and greenhouse as the explanatory variables
+roses_int_mod <- lm(__________, data = roses)
+
+# This is the code from question 3 that 
+# the data to get the average profit for each variety and greenhouse combination.
+agg_int <- roses %>% 
+  group_by(greenhouse, variety) %>% 
+  summarize(profit_avg_int = mean(profit), .groups = "drop")
+
+
+# Fit a linear model model using the agg_int data that has 
+# profit_avg_int as the response and variety and greenhouse as main effects. 
+# No interaction.
+roses_agg_mod<- lm(__________, data = agg_int)
+
+# This code aggregates the data to find the average profit for each greenhouse
+agg_greenhouse <- roses %>% 
+  group_by(greenhouse) %>% 
+  summarize(profit_avg_greenhouse = mean(profit), .groups = "drop")
+
+# Fit a INTERCEPT ONLY linear model using the agg_greenhouse data
+# that has profit_avg_greenhouse as the response.
+roses_greenhouse_mod <- lm(__________, data = agg_greenhouse)
+
+
+# One you have added the models above, you will need to figure out 
+# what each of these terms are.
+
+# A
+summary(roses_agg_mod)$sigma^2 - (summary(roses_int_mod)$sigma^2)/8
+
+# B
+summary(roses_greenhouse_mod)$sigma^2 - (summary(roses_agg_mod)$sigma^2)/4
+
+# C
+summary(roses_int_mod)$sigma^2
+
+# Here is a sneak peek of the way we would fit this kind of model professionally. 
+# You'll see this properly with the vocal pitch case study
+# It may or may not give you some hints for this question if you can 
+# figure out the output and match it with the above.
+mod <- lme4::lmer(profit ~ variety + (1|greenhouse) + (1|greenhouse:variety), data = roses)
+summary(mod)
+
+```
+
+```{r include=FALSE}
+# Data
+
+agg_int <- roses %>% 
+  group_by(greenhouse, variety) %>% 
+  summarize(profit_avg_int = mean(profit), .groups = "drop")
+
+agg_greenhouse <- roses %>% 
+  group_by(greenhouse) %>% 
+  summarize(profit_avg_greenhouse = mean(profit), .groups = "drop")
+
+# Model solutions
+
+roses_int <- lm(profit ~ variety*greenhouse, data = roses)
+summary(roses_int)
+
+roses_agg_mod <- lm(profit_avg_int ~ variety + greenhouse, data = agg_int)
+summary(roses_agg_mod)
+
+roses_greenhouse_mod <- lm(profit_avg_greenhouse ~ 1, data = agg_greenhouse)
+summary(roses_greenhouse_mod)
+
+# A
+summary(roses_agg_mod)$sigma^2 - (summary(roses_int)$sigma^2)/8
+
+# B
+summary(roses_greenhouse_mod)$sigma^2 - (summary(roses_agg_mod)$sigma^2)/4
+
+# C
+summary(roses_int)$sigma^2
+```
+
+```{r include=FALSE}
+# I = 4 (varieties)
+# J = 5 (greenhousees)
+# K = 8 (obs in each level of variety/greenhouse)
+```
+
+```{r include=FALSE}
+# sigma^2 is the variance of our error term. In this balanced design you can get it by squaring the residual standard error from the interaction (and main effects) model.
+```
+
+```{r include=FALSE}
+# The variability explained by the interaction term is equal to the variance of the main effects model on the aggregated data (one average observation per variety and greenhouse) minus [the variance of the interaction (and main effects model) model divided by the number of observations per greenhouse/variety combo].
+
+# The variability explained by greenhouse to greenhouse differences (separate to the interaction effect) is the greenhouse-to-greenhouse variability (intercept only model on the aggregated data by greenhouse) minus [the variance of the main effects model on the aggregated data (one average observation per variety and greenhouse) divided by the number of varietys]
+```
+
+```{r include=FALSE}
+# Fit a model with profit as the response and the main effects 
+# and interaction of variety and greenhouse as the explanatory variables
+roses_int_mod <- lm(profit ~ variety*greenhouse, data = roses)
+
+# This is the code from question 3 that 
+# the data to get the average profit for each variety and greenhouse combination.
+agg_int <- roses %>% 
+  group_by(greenhouse, variety) %>% 
+  summarize(profit_avg_int = mean(profit), .groups = "drop")
+agg_int
+
+# Fit a linear model model using the agg_int data that has 
+# profit_avg_int as the response and variety and greenhouse as main effects. 
+# No interaction.
+roses_agg_mod<- lm(profit_avg_int ~ variety + greenhouse, data = agg_int)
+
+# This code aggregates the data to find the average profit for each greenhouse
+agg_greenhouse <- roses %>% 
+  group_by(greenhouse) %>% 
+  summarize(profit_avg_greenhouse = mean(profit), .groups = "drop")
+agg_greenhouse
+
+# Fit a INTERCEPT ONLY linear model using the agg_greenhouse data
+# that has profit_avg_greenhouse as the response.
+roses_greenhouse_mod <- lm(profit_avg_greenhouse ~ 1, data = agg_greenhouse)
+
+
+# One you have added the models above, you will need to figure out 
+# what each of these terms are.
+
+# A
+summary(roses_agg_mod)$sigma^2 - (summary(roses_int_mod)$sigma^2)/8
+
+# B
+summary(roses_greenhouse_mod)$sigma^2 - (summary(roses_agg_mod)$sigma^2)/4
+
+# C
+summary(roses_int_mod)$sigma^2
+
+# Here is a sneak peek of the way we would fit this kind of model professionally. 
+# You'll see this properly with the vocal pitch case study
+# It may or may not give you some hints for this question if you can 
+# figure out the output and match it with the above.
+mod <- lme4::lmer(profit ~ variety + (1|greenhouse) + (1|greenhouse:variety), data = roses)
+summary(mod)
+
+# I = 4 (varieties)
+# J = 5 (greenhouses)
+# K = 8 (obs of variety/greenhouse)
+
+```
+
+
+```{r q5, include=FALSE}
+question("What is the correct answer?",
+         answer("A"),
+         answer("B"),
+         answer("C", correct = TRUE),
+         answer("D"),
+         message = "See the hints for full discussion."
+)
+```
+
+## Question  6
+
+Suppose our data was presented as follows. We are still interested in making the same plot and doing the same models as before.
+```{r echo = FALSE}
+roses %>% 
+  group_by(variety, greenhouse) %>% 
+  arrange(variety) %>% 
+  mutate(observation = 1) %>% 
+  mutate(observation = str_c(greenhouse, ", plot group  ", cumsum(observation))) %>% 
+  ungroup() %>% 
+  select(-greenhouse) %>% 
+  pivot_wider(names_from = variety, values_from = profit) %>%
+  knitr::kable()
+```
+
+**Which ONE of the following statements best describes our situation with this new version of the dataset?**
+
+**
+A. This dataset is also tidy for our purposes.  
+B. This dataset is NOT tidy for our purposes because each observational unit has too many observations.  
+C. This dataset is NOT tidy for our purposes because it is not the case that each value is in one and only one cell.  
+D. This dataset is NOT tidy for our purposes because it is not the case that each variable is in one and only one column.  
+**
+
+```{r q6, include=FALSE}
+question("What is the correct answer?",
+         answer("A"),
+         answer("B"),
+         answer("C"),
+         answer("D", correct = TRUE),
+         message = "Variety should be one column, but here the levels of vareity are split across several columns."
+)
+```
+
+
+
+
