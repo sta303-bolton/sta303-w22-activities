@@ -135,7 +135,7 @@ $(document).ready(function () {
 <li>Choose an image to pixelate to get your character. You’ll need to have a URL for it (or you could edit the code for a local file). I think it is easiest to upload to GitHub (or Google Photos) and then right click to copy the image address.</li>
 <li>Play with the Shiny app interface for the pixelart package to help you get the settings right.</li>
 <li>Update these settings in the code below.</li>
-<li>[Super super optional] Post your character on the <a href="https://q.utoronto.ca/courses/204826/discussion_topics/1061843?module_item_id=2273817">optional discussion board for this week</a>. If you have a Stardew Valley character or some other pixel art of yourself, you can share that, too. This is just for fun, no requirement to participate. Please be sensible about making sure any images are <em>appropriate.</em> Don’t use images of other people, etc.</li>
+<li>[Super super optional] Post your character on the <a href="https://q.utoronto.ca/courses/253305/discussion_topics/1616645">optional discussion board for this week</a>. If you have a Stardew Valley character or some other pixel art of yourself, you can share that, too. This is just for fun, no requirement to participate. Please be sensible about making sure any images are <em>appropriate.</em> Don’t use images of other people, etc.</li>
 </ol>
 <pre class="r"><code># Install pixel art
 # More info: https://privefl.github.io/pixelart
@@ -647,12 +647,12 @@ anova(bee_agg_mod)</code></pre>
 <div id="section-describing-our-residuals" class="section level3">
 <h3>Describing our residuals</h3>
 <p>Recall the formula for the residual sum of squares (RSS):</p>
-<p><span class="math display">\[RSS = \Sigma^{n}_{i=1} \color{green}{e_i}^2 = \Sigma^{n}_{i=1} (\color{#CC5500}{y_i} - \color{blue}{\hat{y_i}})\]</span></p>
+<p><span class="math display">\[RSS = \Sigma^{n}_{i=1} \color{green}{e_i}^2 = \Sigma^{n}_{i=1} (\color{orange}{y_i} - \color{blue}{\hat{y_i}})\]</span></p>
 <p>where:</p>
 <ul>
 <li><span class="math inline">\(\color{green}{e_i}\)</span> is the residual for observation <span class="math inline">\(i\)</span><br />
 </li>
-<li><span class="math inline">\(\color{yellow}{y_i}\)</span> is the observed value of the response variable for the <span class="math inline">\(i^{th}\)</span> observation<br />
+<li><span class="math inline">\(\color{orange}{y_i}\)</span> is the observed value of the response variable for the <span class="math inline">\(i^{th}\)</span> observation<br />
 </li>
 <li><span class="math inline">\(\color{blue}{\hat{y_i}}\)</span> is the <strong>predicted</strong> value (from the model) for the <span class="math inline">\(i^{th}\)</span> observation</li>
 </ul>
@@ -814,8 +814,8 @@ summary(bee_hive)
 # Notice that the RSE here is just the SD of the average honey production hive-to-hive
 sqrt(var(honey_agg_hive$honey_avg_hive))</code></pre>
 </div>
-<p>So now we can take our hive-to-hive variability subtract the variability explained by the song and hive main effects, and find the variability in honey output hive-to-hive not explained by song or song/hive interactions.</p>
-<p><span class="math display">\[ \sigma_b^2 = \text{RSE}_{honey\_hive}^2 - \frac{\text{RSE}_{bee\_main}^2}{K}\]</span></p>
+<p>So now we can take our hive-to-hive variability subtract the variability explained by the song and hive main effects, and find the variability in honey output hive-to-hive not explained by song or song/hive interactions. We are dividing by I (the number of songs) because we are averaging across them.</p>
+<p><span class="math display">\[ \sigma_b^2 = \text{RSE}_{bee\_hive}^2 - \frac{\text{RSE}_{bee\_agg}^2}{I}\]</span></p>
 <div class="tutorial-exercise" data-label="varhive" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
 </div>
@@ -839,11 +839,12 @@ var_hive</code></pre>
 var_int &lt;- summary(bee_int_mod)$sigma^2
 var_int</code></pre>
 <pre><code>## [1] 13.20828</code></pre>
-<p>We can all talk about the proportion of variance explained by each of our sources of variation. This is also called intraclass correlation coefficient (ICC) or the variance partition coefficient (VPC). We can calculate it by finding the sum</p>
+<p>We can all talk about the proportion of variance explained by each of our sources of variation. This is also called intraclass correlation coefficient (ICC) or the variance partition coefficient (VPC). We can calculate it by finding the sum of all these variances, and setting that value as our denominator.</p>
 <pre class="r"><code>tibble(Source = c(&quot;song:hive&quot;, &quot;hive&quot;, &quot;residual&quot;),
-`Proportion of variance explained` = c(var_ab / (var_ab + var_hive + var_int),
-var_hive / (var_ab + var_hive + var_int),
-var_int / (var_ab + var_hive + var_int))) %&gt;% 
+  `Proportion of variance explained` = c(
+    var_ab / (var_ab + var_hive + var_int),
+    var_hive / (var_ab + var_hive + var_int),
+    var_int / (var_ab + var_hive + var_int))) %&gt;% 
   knitr::kable()</code></pre>
 <table>
 <thead>
@@ -885,6 +886,7 @@ var_int / (var_ab + var_hive + var_int))) %&gt;%
 <p>Note the below notation is is based on using least squares and treating all variables as fixed effects. This isn’t the way you would explain a linear model in practice, but I hope helps you see how we are thinking about partitioning our variance. It also helps remind us that regression is just fancy averaging.</p>
 <p><img src="images/fancyaveraging.png" width="592" /></p>
 <p><a href="https://twitter.com/ajeanstevenson/status/1488601482505060352">Link to tweet</a></p>
+<p>Note: The <span class="math inline">\(\cdot\)</span> you’ll see in some of the following subscripts indicate where we are aggregating and averaging across that level of the data.</p>
 <div id="section-full-interaction-model-includes-main-effects-bee_int_mod" class="section level5">
 <h5>Full interaction model (includes main effects) (<code>bee_int_mod</code>)</h5>
 <table>
@@ -905,7 +907,7 @@ var_int / (var_ab + var_hive + var_int))) %&gt;%
 <td><code>lm(honey_g ~ song*hive, data = honey)</code></td>
 <td><p><span class="math inline">\(y_{ijk} = \mu + \alpha_i + b_j + (\alpha b)_{ij} + \epsilon_{ijk}\)</span></p>
 <p><strong>Traditional linear regression</strong></p>
-<p><span class="math inline">\(y_{ijk} = \beta_0 + \beta_2 \text{song}_i + \beta_2\text{hive}_j + \beta_3\text{song}_i\text{hive}_j + \epsilon_{ijk}\)</span></p>
+<p><span class="math inline">\(y_{ijk} = \beta_0 + \beta_1 \text{song}_i + \beta_2\text{hive}_j + \beta_3\text{song}_i\text{hive}_j + \epsilon_{ijk}\)</span></p>
 <p><br />
 These are equivalent, just with different contrasts (how we set up our model matrix).</p></td>
 <td><span class="math inline">\(RSE^2\)</span> is <span class="math inline">\(\sigma^2\)</span> is the unexplained variation after fitting the most complicated model.</td>
@@ -935,7 +937,7 @@ These are equivalent, just with different contrasts (how we set up our model mat
 <p>where</p>
 <p><span class="math inline">\(\epsilon_{ij} = (\alpha b)_{ij}+\frac{1}{K}\Sigma_{k=1}^n\)</span></p>
 <p><strong>Traditional linear regression</strong></p>
-<p><span class="math inline">\(y_{ij\cdot} = \beta_0 + \beta_2 \text{song}_i + \beta_3\text{hive}_j + \epsilon_{ij}\)</span></p></td>
+<p><span class="math inline">\(y_{ij\cdot} = \beta_0 + \beta_1 \text{song}_i + \beta_2\text{hive}_j + \epsilon_{ij}\)</span></p></td>
 <td>The <span class="math inline">\(RSE^2\)</span> here is the unexplained variation in the average honey production after accounting for the main effects of song and hive. We will use it to help find <span class="math inline">\(\sigma_{\alpha b}\)</span>.</td>
 </tr>
 </tbody>
@@ -945,9 +947,9 @@ These are equivalent, just with different contrasts (how we set up our model mat
 <h5>Intercept only model for hives averages (<code>bee_hive_mod</code>)</h5>
 <table>
 <colgroup>
-<col width="22%" />
-<col width="27%" />
-<col width="49%" />
+<col width="14%" />
+<col width="25%" />
+<col width="60%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -958,12 +960,14 @@ These are equivalent, just with different contrasts (how we set up our model mat
 </thead>
 <tbody>
 <tr class="odd">
-<td><p><code>lm(honey_g ~ 1, data = honey_agg)</code></p>
+<td><p><code>lm(honey_g ~ 1, data = honey_agg_hive)</code></p>
 <p>(note aggregated dataset)</p></td>
-<td><p><span class="math inline">\(y_{\cdot j \cdot} = \mu + \epsilon_j\)</span></p>
+<td><p><span class="math inline">\(y_{\cdot j \cdot} = \mu + \frac{1}{I}\Sigma^I_{i = 1}\alpha_i + \epsilon\)</span></p>
+<p>where:</p>
+<p><span class="math inline">\(\epsilon_j = b_j + \frac{1}{I}\Sigma\epsilon_j\)</span></p>
 <p><strong>Traditional linear regression</strong></p>
 <p><span class="math inline">\(y_{\cdot j\cdot} = \beta_0 + \epsilon_{j}\)</span></p></td>
-<td>The <span class="math inline">\(RSE^2\)</span> here is <span class="math inline">\(\sigma_b\)</span>, hive-to-hive variation in average honey output.</td>
+<td>The <span class="math inline">\(RSE^2\)</span> here is hive-to-hive variation in average honey output (without taking into account the interaction between hive and song). We will use it to help find <span class="math inline">\(\sigma_{b}\)</span>.</td>
 </tr>
 </tbody>
 </table>

@@ -34,17 +34,11 @@ social_data <- read_csv("scraped_data.csv")
 
 ## Instructions
 
-To participate in this activity you will need have to two windows readily available to you:
+This is a revision task based on the Module 1 Team Up! activity. There are no bonus points for completing the task asynchronously, but I hope it might be a useful revision tool for you.
 
-1) Your Zoom window  
-2) The Team Up! activity linked from Quercus in a browser window for voting.
+There are hints for some questions. In these cases the final hint is complete correct code.
 
-I would recommend that one member of the team shares their screen with the rest of the team and shows this activity where you can see the question and options.
-
-Note 1: In the Team Up! activity you will just see the letters for the questions, not the options themselves. 
-
-Note 2: There are hints for some questions, but if you get really stuck, please use the 'Ask for Help' option in Zoom. 
-
+You can clear your answers and start again with the 'Start Over' button at the bottom of the menu. (I doubt this is well optimised for mobile, so if you can't see it, use a larger screen.)
 
 ## Question 1
 
