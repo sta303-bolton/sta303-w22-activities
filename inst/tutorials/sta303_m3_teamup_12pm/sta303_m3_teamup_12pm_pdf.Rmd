@@ -1,6 +1,6 @@
 ---
-title: 'STA303: M3 class activity'
-subtitle: Return to Statdew Valley
+title: 'STA303: M3 Team Up! activity'
+subtitle: "I grow rows and rows of roses"
 output: pdf_document
 ---
 

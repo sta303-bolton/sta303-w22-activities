@@ -1,6 +1,6 @@
 ---
 title: "STA303: M3 Team Up! activity"
-subtitle: "Return to Statdew Valley"
+subtitle: "I grow rows and rows of roses"
 output: learnr::tutorial
 css: "css/learnr_303.css"
 runtime: shiny_prerendered
@@ -95,7 +95,7 @@ To answer the following question, wrangle and plot the rose data as follows:
 1. Change the order of the levels of the variety factor so that instead of being alphabetical, they go: "north", "south", "east", "west", "central".
   - This WON'T change the way the data appears when you view it from the environment pane but WILL change how ggplot plots it. 
 1. Pipe this changed `roses` data directly into a ggplot.
-1. Put `greenhouse` on your x-axis, `profit` on your y, and colour by `variety`.
+1. Put `variety` on your x-axis, `profit` on your y, and colour by `greenhouse`.
 1. Use points as your geometry. (There is probably a bit of overprinting, but we won't worry about that here.)
 1. You can add `theme_minimal()` if you like, but use the default colour palette.
 
