@@ -883,7 +883,7 @@ Once you have your `honey_agg_hive` dataset, use it to fit an **intercept-only**
 
 ```{r varhth-solution}
 bee_hive_mod <- lm(honey_avg_hive ~ 1, data = honey_agg_hive)
-summary(bee_hive)
+summary(bee_hive_mod)
 
 # Notice that the RSE here is just the SD of the average honey production hive-to-hive
 sqrt(var(honey_agg_hive$honey_avg_hive))
