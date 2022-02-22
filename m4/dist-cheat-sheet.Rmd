@@ -259,7 +259,6 @@ Link: [3.5.2 Student’s $t$-Distribution](https://bookdown.org/roback/bookdown-
 
 ## $F$-Distribution
 Link: [3.5.3  $F$-Distribution](https://bookdown.org/roback/bookdown-BeyondMLR/ch-distthry.html#f-distribution)
-]]
 
 * When might you use this distribution in a test? Come up with an example.
 
