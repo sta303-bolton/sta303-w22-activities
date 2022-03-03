@@ -49,7 +49,7 @@ risk2009 %>%
   summarise(meanBMI = mean(bmipct),
             medianBMI = median(bmipct))
 
-# Are the proportions of respondents seeiking to lose weight similar across sex?
+# Are the proportions of respondents seeking to lose weight similar across sex?
 prop.table(table(risk2009$sex, risk2009$lose.wt), 1)
 chisq.test(risk2009$lose.wt, risk2009$sex)
 
@@ -238,7 +238,7 @@ cat(" Residual deviance = ",
     summary(model3)$df.residual, "df")
 ```
 
-(The reading also discusses the `media` variable and further interactions with `sport`, these has been omitted here.)
+(The reading also discusses the `media` variable and further interactions with `sport`, these have been omitted here.)
 
 ## Model comparisons
 
@@ -253,4 +253,4 @@ lmtest::lrtest(model1, model2, model3)
 Comparing models using differences in deviances requires that the models be __nested__, meaning each smaller model is a simplified version of the larger model. In our case, Models 1, 2, and 3 are nest. You'll see additional models fit in the reading, where Models 3 and 4 cannot be compared using a deviance test. There is an example of applying AIC.
 
 ## Final comments
-Pay special attention to the Discussion section of this reading. It is a good example of discussing limitations for an analysis, which you will have to do for future weekly writing (TBC) and in your final project.
+Pay special attention to the Discussion section of this reading. It is a good example of discussing limitations for an analysis, which you will have to do in your final project.

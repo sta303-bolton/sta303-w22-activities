@@ -44,7 +44,7 @@ risk2009 <- risk2009 %>%
 # What are the mean and median BMIs for this sample?
 
 
-# Are the proportions of respondents seeiking to lose weight similar across sex?
+# Are the proportions of respondents seeking to lose weight similar across sex?
 
 # sport?
 
@@ -195,7 +195,7 @@ Note from the the reading: Sports participation was considered for inclusion in 
 
 ```
 
-(The reading also discusses the `media` variable and further interactions with `sport`, these has been omitted here.)
+(The reading also discusses the `media` variable and further interactions with `sport`, these have been omitted here.)
 
 ## Model comparisons
 
@@ -208,4 +208,4 @@ Note from the the reading: Sports participation was considered for inclusion in 
 Comparing models using differences in deviances requires that the models be __nested__, meaning each smaller model is a simplified version of the larger model. In our case, Models 1, 2, and 3 are nest. You'll see additional models fit in the reading, where Models 3 and 4 cannot be compared using a deviance test. There is an example of applying AIC.
 
 ## Final comments
-Pay special attention to the Discussion section of this reading. It is a good example of discussing limitations for an analysis, which you will have to do for future weekly writing (TBC) and in your final project.
+Pay special attention to the Discussion section of this reading. It is a good example of discussing limitations for an analysis, which you will have to do in your final project.
