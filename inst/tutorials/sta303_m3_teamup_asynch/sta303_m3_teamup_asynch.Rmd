@@ -53,11 +53,11 @@ roses <- tibble(
 
 ## Instructions
 
-This is a revision task based on the Module 1 Team Up! activity. There are no bonus points for completing the task asynchronously, but I hope it might be a useful revision tool for you.
+This is a revision task based on the Module 3 Team Up! activity. There are no bonus points for completing the task asynchronously, but I hope it might be a useful revision tool for you.
 
 There are hints for some questions. In these cases the final hint is complete correct code.
 
-You can clear your answers and start again with the 'Start Over' button at the bottom of the menu. (I doubt this is well optimised for mobile, so if you can't see it, use a larger screen.)
+You can clear your answers and start again with the 'Start Over' button at the bottom of the menu. (I doubt this is well optimized for mobile, so if you can't see it, use a larger screen.)
 
 
 ## Data
